@@ -1,0 +1,3135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <title>microbiology</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+            background: #f4f6fb;
+            color: #222;
+            direction: rtl;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        header {
+            background: linear-gradient(135deg, #283593, #5c6bc0);
+            color: #fff;
+            padding: 20px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 24px;
+        }
+        header p {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .filters-bar h3 {
+            width: 100%;
+            margin: 8px 0 4px;
+            font-size: 14px;
+            color: #333;
+        }
+        .btn-chip {
+            border: 1px solid #c5cae9;
+            background: #e8eaf6;
+            color: #1a237e;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-chip.active {
+            background: #1a237e;
+            color: #fff;
+            border-color: #1a237e;
+        }
+        .btn-chip:hover {
+            background: #c5cae9;
+        }
+
+        .search-box {
+            margin: 10px 0 18px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 999px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .question-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            border-inline-start: 3px solid #283593;
+        }
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .question-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid #283593;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #283593;
+        }
+        .question-meta {
+            font-size: 11px;
+            color: #666;
+        }
+        .question-text-en {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .question-text-ar {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
+        }
+        .option-btn {
+            border-radius: 8px;
+            border: 1px solid #cfd8dc;
+            padding: 6px 8px;
+            background: #fafafa;
+            font-size: 13px;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .option-btn:hover {
+            background: #eceff1;
+        }
+        .option-btn.correct {
+            background: #e8f5e9;
+            border-color: #43a047;
+            color: #1b5e20;
+        }
+        .option-btn.wrong {
+            background: #ffebee;
+            border-color: #e53935;
+            color: #b71c1c;
+        }
+
+        .answer-footer {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #ddd;
+            font-size: 12px;
+        }
+        .answer-footer .correct-label {
+            font-weight: 600;
+            color: #1b5e20;
+            margin-bottom: 2px;
+        }
+        .answer-footer .explanation {
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1> Microbiology-by_Shiry</h1>
+  //this web made by zeyad mostafa mohammed aboalnader      
+        <p>Interactive Anatomy & Microbiology Question Bank – Single page practice with live stats.</p>
+        <p>بنك أسئلة تفاعلي للمراجعة مع الترجمة العربية والتصحيح الفوري.</p>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">إجمالي الأسئلة</div>
+            <div class="stat-value" id="stat-total">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">تمت الإجابة</div>
+            <div class="stat-value" id="stat-answered">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">الإجابات الصحيحة</div>
+            <div class="stat-value" id="stat-correct">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">نسبة النجاح</div>
+            <div class="stat-value" id="stat-score">0%</div>
+        </div>
+    </div>
+
+    <div class="search-box">
+        <input id="searchInput" type="text" placeholder="ابحث في السؤال (إنجليزي أو عربي) أو المجموعة (Group A, B, C, D) أو الكاتيجوري..." />
+    </div>
+
+    <div class="filters-bar" id="filters-part">
+        <h3>المجموعات (Group)</h3>
+        <button class="btn-chip active" data-type="part" data-value="all">الكل</button>
+        <button class="btn-chip" data-type="part" data-value="Group A">Group A</button>
+        <button class="btn-chip" data-type="part" data-value="Group B">Group B</button>
+        <button class="btn-chip" data-type="part" data-value="Group C">Group C</button>
+        <button class="btn-chip" data-type="part" data-value="Group D">Group D</button>
+    </div>
+
+    <div class="filters-bar" id="filters-category">
+        <h3>الفئات (Category)</h3>
+        <button class="btn-chip active" data-type="category" data-value="all">الكل</button>
+        <button class="btn-chip" data-type="category" data-value="Bacteriology">Bacteriology</button>
+        <button class="btn-chip" data-type="category" data-value="Virology">Virology</button>
+        <button class="btn-chip" data-type="category" data-value="Immunology">Immunology</button>
+        <button class="btn-chip" data-type="category" data-value="General Microbiology">General Microbiology</button>
+        <button class="btn-chip" data-type="category" data-value="Infection Control">Infection Control</button>
+    </div>
+
+    <div class="questions-list" id="questionsList"></div>
+</div>
+
+<script>
+const allQuestions = [
+    {
+        id: 1,
+        part: "Group A",
+        category: "Immunology",
+        en: "… is a substance produced by B cells that reacts with antigens and prepares them for destruction.",
+        ar: "مادة تُنتَج بواسطة الخلايا البائية وتتفاعل مع المستضدات وتُهيّئها للتدمير.",
+        options: ["Antibodies", "Bacteria", "Spores", "Bacteriophage"],
+        correct: 0,
+        explanation: "الأجسام المضادة تنتجها الخلايا البائية وترتبط بالمستضد لتسهيل تدميره بواسطة خلايا الجهاز المناعي."
+    },
+    {
+        id: 2,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "… is a semisynthetic or synthetic substance that kills or inhibits the growth of microorganisms.",
+        ar: "مادة شبه صناعية أو صناعية تقتل أو تثبط نمو الكائنات الدقيقة.",
+        options: ["Antibodies", "Antimicrobial", "Antigens", "Mutagens"],
+        correct: 1,
+        explanation: "العوامل المضادة للميكروبات هي مواد تقتل الميكروبات أو تمنع نموها."
+    },
+    {
+        id: 3,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "… is a transient presence of bacteria in the bloodstream with signs and symptoms of local infection.",
+        ar: "وجود عابر للبكتيريا في مجرى الدم مع علامات وأعراض عدوى موضعية.",
+        options: ["Toxemia", "Viremia", "Bacteremia", "Septicemia"],
+        correct: 2,
+        explanation: "البكتيريميا تعني وجود بكتيريا في الدم غالبًا مصحوبة بعدوى موضعية."
+    },
+    {
+        id: 4,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "… is the presence of bacterial toxins in the bloodstream associated with signs of shock including tachycardia and low blood pressure.",
+        ar: "وجود سموم بكتيرية في مجرى الدم مرتبطة بعلامات صدمة مثل تسارع القلب وانخفاض ضغط الدم.",
+        options: ["Infection", "Viremia", "Bacteremia", "Septicemia"],
+        correct: 3,
+        explanation: "الإنتان (Septicemia) أو تجرثم الدم السمي يرتبط بوجود سموم بكتيرية وأعراض صدمة عامة."
+    },
+    {
+        id: 5,
+        part: "Group A",
+        category: "Infection Control",
+        en: "… is the complete elimination or destruction of all forms of microbial life, including bacterial spores.",
+        ar: "الإزالة أو التدمير الكامل لكل صور الحياة الميكروبية بما فيها الأبواغ البكتيرية.",
+        options: ["Culturing", "Cleaning", "Sterilization", "Disinfection"],
+        correct: 2,
+        explanation: "التعقيم هو القضاء التام على جميع الكائنات الحية الدقيقة بما فيها الأبواغ."
+    },
+    {
+        id: 6,
+        part: "Group A",
+        category: "Infection Control",
+        en: "… is a process that uses chemical agents or heat to eliminate many or all pathogenic microorganisms except bacterial spores.",
+        ar: "عملية تستخدم عوامل كيميائية أو حرارة للقضاء على كثير أو كل الميكروبات الممرِضة ما عدا الأبواغ.",
+        options: ["Incubation", "Cleaning", "Sterilization", "Disinfection"],
+        correct: 3,
+        explanation: "التطهير يزيل معظم الميكروبات الممرِضة لكن لا يضمن القضاء على الأبواغ."
+    },
+    {
+        id: 7,
+        part: "Group A",
+        category: "Infection Control",
+        en: "… is a process that uses detergent and water to remove visible contamination but does not necessarily destroy microbes.",
+        ar: "عملية تستخدم المنظفات والماء لإزالة التلوث المرئي دون أن تقتل الميكروبات بالضرورة.",
+        options: ["Culturing", "Cleaning", "Sterilization", "Disinfection"],
+        correct: 1,
+        explanation: "التنظيف يزيل الأوساخ والمواد العضوية لكنه ليس كافيًا للقضاء على كل الميكروبات."
+    },
+    {
+        id: 8,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "… is an acute inflammation of the protective membranes of the brain and spinal cord.",
+        ar: "التهاب حاد في الأغشية السحائية التي تغطي المخ والحبل الشوكي.",
+        options: ["Pneumonia", "Meningitis", "Gastroenteritis", "Disinfection"],
+        correct: 1,
+        explanation: "التهاب السحايا هو التهاب الأغشية المحيطة بالمخ والحبل الشوكي."
+    },
+    {
+        id: 9,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "Bacteria have a very small size, so they are measured in …",
+        ar: "البكتيريا ذات حجم صغير جدًا لذلك تُقاس بوحدة …",
+        options: ["Microns", "Nanometers", "Millimeter", "None of above"],
+        correct: 0,
+        explanation: "حجم البكتيريا غالبًا يقاس بالميكرون (ميكرومتر)."
+    },
+    {
+        id: 10,
+        part: "Group A",
+        category: "Infection Control",
+        en: "Bacteriostatic agent means …",
+        ar: "العامل المُثبِّت للبكتيريا يعني …",
+        options: ["Kills bacteria", "Inhibits growth of bacteria", "Stimulates growth of bacteria", "None of these"],
+        correct: 1,
+        explanation: "العامل البكتريوستاتيكي يوقف نمو البكتيريا دون قتلها مباشرة."
+    },
+    {
+        id: 11,
+        part: "Group A",
+        category: "Infection Control",
+        en: "Bactericidal agent means …",
+        ar: "العامل القاتل للبكتيريا يعني …",
+        options: ["Inhibits growth of bacteria", "Stimulates growth of bacteria", "Kills bacteria", "All of these"],
+        correct: 2,
+        explanation: "العامل البكتريوسيدي يقتل البكتيريا مباشرة."
+    },
+    // أكمل بنفس النمط لباقي الأسئلة حتى رقم 195
+        {
+        id: 12,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The DNA of Prokaryotes are ........ in shape.",
+        ar: "الـ DNA في الكائنات بدائية النواة يكون ........ في الشكل.",
+        options: ["Circular", "Linear", "Helical", "None of the above"],
+        correct: 0,
+        explanation: "الحمض النووي في أغلب البكتيريا يكون دائريًا."
+    },
+    {
+        id: 13,
+        part: "Group A",
+        category: "Cell Biology",
+        en: "In eukaryotic cell ..",
+        ar: "في الخلية حقيقية النواة ..",
+        options: [
+            "DNA is linear",
+            "Has a nucleus",
+            "Reproduction by mitosis and meiosis",
+            "All of the above"
+        ],
+        correct: 3,
+        explanation: "الخلايا حقيقية النواة تحتوي نواة حقيقية وDNA خطيًا وتنقسم بالانقسام المتساوي والاختزالي."
+    },
+    {
+        id: 14,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "............. help in protection of the bacterial cell when it engulfed by other organisms.",
+        ar: "............. تساعد في حماية الخلية البكتيرية عند ابتلاعها بواسطة كائنات أخرى.",
+        options: ["Flagella", "Pilli", "Ribosomes", "Capsule"],
+        correct: 3,
+        explanation: "الكبسولة تساعد البكتيريا على مقاومة البلعمة من قبل الخلايا المناعية."
+    },
+    {
+        id: 15,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "All of the following are essential structures except...",
+        ar: "كل ما يلي يُعَد من التراكيب الأساسية ما عدا ..",
+        options: ["Capsule", "Cell wall", "Nucleoid", "Cytoplasm"],
+        correct: 0,
+        explanation: "الكبسولة تركيب غير أساسي بينما الجدار الخلوي والنوكلويد والسيتوبلازم تراكيب أساسية."
+    },
+    {
+        id: 16,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "........ is essential structure responsible for motility.",
+        ar: "........ تركيب مسؤول عن الحركة في الخلية البكتيرية.",
+        options: ["Pilli", "Cell wall", "Flagella", "Cytoplasm"],
+        correct: 2,
+        explanation: "الأسواط هي التركيب المسؤول عن حركة البكتيريا."
+    },
+    {
+        id: 17,
+        part: "Group A",
+        category: "Genetics",
+        en: "The chromosome of bacteria is ..",
+        ar: "الكروموسوم في البكتيريا يكون ..",
+        options: ["Haploid", "Diploid", "Polyploid", "Triploid"],
+        correct: 0,
+        explanation: "البكتيريا تمتلك عادة نسخة واحدة من الكروموسوم (Haploid)."
+    },
+    {
+        id: 18,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Bacteria reproduce by ..",
+        ar: "تتكاثر البكتيريا بواسطة ..",
+        options: ["Binary fission", "Spores", "Mitosis", "Meiosis"],
+        correct: 0,
+        explanation: "التكاثر الأساسي في البكتيريا بالانقسام الثنائي."
+    },
+    {
+        id: 19,
+        part: "Group A",
+        category: "Bacteriology",
+        en: ".... is non-essential component of bacterial cell.",
+        ar: ".... يُعتبر تركيبًا غير أساسي في الخلية البكتيرية.",
+        options: ["Fimbria", "Cytoplasm", "Cell wall", "Nucleoid"],
+        correct: 0,
+        explanation: "الـ Fimbriae من التراكيب غير الأساسية وتساعد في الالتصاق."
+    },
+    {
+        id: 20,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The intracellular organelles of bacteria include....................",
+        ar: "العُضَيّات داخل الخلية البكتيرية تشمل ....................",
+        options: [
+            "Fimbria & flagella",
+            "Cell wall & cytoplasmic membrane",
+            "Nucleoid and Ribosomes",
+            "Nucleoid"
+        ],
+        correct: 2,
+        explanation: "منطقة النيوكليود والريبوسومات هي المكونات الداخلية الرئيسية."
+    },
+    {
+        id: 21,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "All of the following are essential structures of bacteria except...",
+        ar: "كل مما يلي من التراكيب الأساسية للبكتيريا ما عدا ..",
+        options: ["Cell wall", "Cytoplasm", "Spores", "DNA"],
+        correct: 2,
+        explanation: "الأبواغ تراكيب غير أساسية تتكون في الظروف غير المناسبة."
+    },
+    {
+        id: 22,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "........ is outer covering present in all cells that protects the Bacterial cell and gives it shapes.",
+        ar: "........ هو الغطاء الخارجي الذي يحمي الخلية البكتيرية ويُكسبها الشكل.",
+        options: ["Capsule", "Cell wall", "Nucleoid", "Cytoplasm"],
+        correct: 1,
+        explanation: "الجدار الخلوي هو المسؤول عن الشكل والحماية."
+    },
+    {
+        id: 23,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The function of cytoplasmic membrane is............",
+        ar: "وظيفة الغشاء السيتوبلازمي هي ............",
+        options: ["Shape of bacteria", "Motility", "Selective permeability", "Resist dryness"],
+        correct: 2,
+        explanation: "الغشاء السيتوبلازمي يعمل كحاجز ذو نفاذية اختيارية لنقل المواد."
+    },
+    {
+        id: 24,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The function of flagella is..",
+        ar: "وظيفة الأسواط هي ..",
+        options: ["Respiration", "Movement", "Reproduction", "Fermentation"],
+        correct: 1,
+        explanation: "الأسواط مسؤولة عن حركة البكتيريا."
+    },
+    {
+        id: 25,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The structure that is responsible for the shape of bacteria is ..",
+        ar: "التركيب المسؤول عن شكل البكتيريا هو ..",
+        options: ["Cell wall", "Spores", "Cytoplasm", "Capsule"],
+        correct: 0,
+        explanation: "الجدار الخلوي يحافظ على شكل الخلية البكتيرية."
+    },
+    {
+        id: 26,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "Most bacteria need all of the following for their growth except ..",
+        ar: "معظم البكتيريا تحتاج إلى كل ما يلي للنمو ما عدا ..",
+        options: ["Nutrition", "Gases", "Light", "Moisture"],
+        correct: 2,
+        explanation: "معظم البكتيريا لا تحتاج للضوء مباشرة للنمو."
+    },
+    {
+        id: 27,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Which of the following bacteria is comma shaped?",
+        ar: "أي البكتيريا التالية لها شكل الفاصلة؟",
+        options: ["Streptococci", "Vibrio cholera", "Diphtheria", "None of these"],
+        correct: 1,
+        explanation: "Vibrio cholerae لها شكل الفاصلة (الواو)."
+    },
+    {
+        id: 28,
+        part: "Group A",
+        category: "Bacteriology",
+        en: ".. decides the ability of bacteria to be stained by Gram stain.",
+        ar: ".. يحدد قدرة البكتيريا على التلوين بصبغة جرام.",
+        options: ["Cell wall", "Spores", "Cytoplasm", "Capsule"],
+        correct: 0,
+        explanation: "تركيب الجدار الخلوي هو العامل الأساسي في تفاعل صبغة جرام."
+    },
+    {
+        id: 29,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Cell wall decides the ability of bacteria to be stained by bacterial stains due to presence of ..",
+        ar: "يحدد الجدار الخلوي قابلية البكتيريا للتلوين بسبب وجود ..",
+        options: ["Peptidoglycan", "Pilli", "Cell membrane", "Capsule"],
+        correct: 0,
+        explanation: "الببتيدوجليكان في الجدار مهم في تفاعل صبغات البكتيريا."
+    },
+    {
+        id: 30,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "...................... is one of essential component of bacterial cell consisted of 80% water, containing lipids, carbohydrates, ions, enzymes and inclusion granules.",
+        ar: "...................... أحد المكونات الأساسية للخلية البكتيرية يحتوي على ٨٠٪ ماء ودهون وكربوهيدرات وأيونات وإنزيمات وحبيبات تخزينية.",
+        options: ["Cell wall", "Nucleoid", "Cytoplasm", "Ribosomes"],
+        correct: 2,
+        explanation: "السيتوبلازم هو الوسط الداخلي الذي يحتوي على معظم مكونات الخلية."
+    },
+    {
+        id: 31,
+        part: "Group A",
+        category: "Bacteriology",
+        en: ".. is a hair-like appendages on the surface of many bacteria, responsible for adhesion and attachment of bacterial cell to the surface of the host cell.",
+        ar: "زائدة تشبه الشعر على سطح كثير من البكتيريا، مسؤولة عن الالتصاق بسطح الخلية المضيفة.",
+        options: ["Flagella", "Pilli", "Cell membrane", "Capsule"],
+        correct: 1,
+        explanation: "البيلي أو الأهداب تساعد البكتيريا على الالتصاق بالأنسجة."
+    },
+    {
+        id: 32,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "...................... non-essential structure of bacterial cell used for sense temperature and chemicals.",
+        ar: "...................... تركيب غير أساسي يُستخدم للإحساس بالحرارة والمواد الكيميائية.",
+        options: ["Flagella", "Pilli", "Cell membrane", "Capsule"],
+        correct: 0,
+        explanation: "الأسواط تساعد في الحركة نحو أو بعيدًا عن منبهات كيميائية أو حرارية."
+    },
+    {
+        id: 33,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "........................... is non-essential structure of bacterial cell used for attachment and conjugation.",
+        ar: "........................... تركيب غير أساسي في الخلية البكتيرية يُستخدم للالتصاق والاقتران.",
+        options: ["Flagella", "Pilli", "Cell membrane", "Capsule"],
+        correct: 1,
+        explanation: "الـ sex pili مهمة في عملية الاقتران البكتيري ونقل المادة الوراثية."
+    },
+    {
+        id: 34,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "....... is bacterial cell structures responsible for protein synthesis from mRNA.",
+        ar: "....... تركيب في الخلية البكتيرية مسؤول عن تصنيع البروتين من mRNA.",
+        options: ["Ribosome", "Spore", "Cell membrane", "Nucleoid"],
+        correct: 0,
+        explanation: "الريبوسومات هي موقع ترجمة mRNA إلى بروتين."
+    },
+    {
+        id: 35,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "............... is called chromatin body or bacterial chromosome.",
+        ar: "............... يُسمى الجسم الكروماتيني أو الكروموسوم البكتيري.",
+        options: ["Nucleoid", "Plasmid", "Cell membrane", "Capsule"],
+        correct: 0,
+        explanation: "منطقة النيوكليود تضم الكروموسوم البكتيري الرئيسي."
+    },
+    {
+        id: 36,
+        part: "Group A",
+        category: "Bacteriology",
+        en: ".. is the structure that is formed under unfavorable condition.",
+        ar: ".. هو التركيب الذي يتكوّن تحت الظروف غير الملائمة.",
+        options: ["Pilli", "Capsule", "Spore", "Flagella"],
+        correct: 2,
+        explanation: "الأبواغ تتكون لحماية البكتيريا في الظروف القاسية."
+    },
+    {
+        id: 37,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The outer layer of spore consists of ....",
+        ar: "الطبقة الخارجية للبوغ تتكوّن من ....",
+        options: ["Cytoplasmic membrane", "Keratin coated protein", "Normal peptidoglycan", "Less cross linked peptidoglycan"],
+        correct: 1,
+        explanation: "القشرة الخارجية للبوغ غنية ببروتينات شبيهة بالكيراتين لزيادة المقاومة."
+    },
+    {
+        id: 38,
+        part: "Group A",
+        category: "Bacteriology",
+        en: ".. is inactive form of the bacteria (dormant cell) which can survive and allow the bacteria to resist adverse environmental conditions.",
+        ar: "شكل غير نشط من البكتيريا (خلية كامنة) يمكنه البقاء ومقاومة الظروف البيئية المعاكسة.",
+        options: ["Pilli", "Capsule", "Spore", "Flagella"],
+        correct: 2,
+        explanation: "الأبواغ خلايا كامنة شديدة المقاومة."
+    },
+    {
+        id: 39,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Site of spores inside bacterial cells may be ............",
+        ar: "موضع الأبواغ داخل الخلية البكتيرية قد يكون ............",
+        options: ["Terminal", "Lateral", "Superficial", "Cranial"],
+        correct: 0,
+        explanation: "يمكن أن تكون الأبواغ طرفية أو مركزية أو تحت طرفية؛ هنا ذُكر الطرفي كمثال."
+    },
+    {
+        id: 40,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Spore can resist adverse environmental conditions which is not suitable for the bacteria due to presence of ..",
+        ar: "يمكن للبوغ مقاومة الظروف البيئية غير المناسبة للبكتيريا بسبب وجود ..",
+        options: ["Hydrochloric acid", "Acetoacetic acid", "Dipiclonic acid", "Dihydrochloric acid"],
+        correct: 2,
+        explanation: "حمض الديبيكولينك مع الكالسيوم يعطي البوغ مقاومته العالية."
+    },
+    {
+        id: 41,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The gram +ve bacteria appear ............... in color by gram stain.",
+        ar: "البكتيريا الموجبة لصبغة جرام تظهر بلون ............... بعد الصبغ.",
+        options: ["Brownish", "Violet", "Red", "Greenish"],
+        correct: 1,
+        explanation: "البكتيريا موجبة الجرام تظهر باللون البنفسجي."
+    },
+    {
+        id: 42,
+        part: "Group A",
+        category: "Genetics",
+        en: "The sudden stable heritable change in nucleotide sequence in DNA is called ......",
+        ar: "التغير المفاجئ والثابت والقابل للتوريث في تسلسل النيوكليوتيدات في DNA يُسمى ......",
+        options: ["Binary fission", "Conjugation", "Mutation", "Transcription"],
+        correct: 2,
+        explanation: "الطفرة هي التغير المستقر والقابل للتوريث في المادة الوراثية."
+    },
+    // كمل بعدها من 43 بنفس النمط لو حابب أبعتهولك في رسالة تانية
+    {
+        id: 43,
+        part: "Group A",
+        category: "Virology",
+        en: ".. are ultramicroscopic, obligate intracellular parasites that contain only one type of nucleic acid, either DNA or RNA, surrounded by capsid.",
+        ar: "كائنات مجهرية للغاية، طفيليات إجبارية داخل الخلايا، تحتوي نوعًا واحدًا فقط من الحمض النووي، ومحاطة بغلاف بروتيني.",
+        options: ["Viruses", "Fungi", "Plant cell", "Bacterial"],
+        correct: 0,
+        explanation: "الفيروسات تحتوي إما على DNA أو RNA واحد فقط، وتتكاثر داخل الخلايا الحية كمضيف إجباري."
+    },
+    {
+        id: 44,
+        part: "Group A",
+        category: "Genetics",
+        en: ".. are small circular DNA structures present outside the nuclear body.",
+        ar: "تراكيب DNA دائرية صغيرة توجد خارج الجسم النووي.",
+        options: ["Nuclear body", "Mitochondria", "Chromosomes", "Plasmid"],
+        correct: 3,
+        explanation: "البلازميدات هي جزيئات DNA دائرية صغيرة خارج الكروموسوم الرئيسي."
+    },
+    {
+        id: 45,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "......................... are considered a cellular microorganisms.",
+        ar: "......................... تُعتبر كائنات دقيقة خلوية.",
+        options: ["Bacteria", "Viruses", "Fungi", "Algae"],
+        correct: 0,
+        explanation: "البكتيريا والفطريات والطحالب كائنات خلوية؛ الفيروسات غير خلوية."
+    },
+    {
+        id: 46,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Pilli found in ..",
+        ar: "البيلي توجد في ..",
+        options: [
+            "Gram +ve bacteria only",
+            "Both gram +ve and -ve bacterial",
+            "Gram -ve bacteria only",
+            "None of the above"
+        ],
+        correct: 2,
+        explanation: "الأهداب (Pili) توجد عادةً في البكتيريا سالبة الجرام خاصةً المسؤولة عن الاقتران."
+    },
+    {
+        id: 47,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Bacteria appear under microscope as spheres shape are ..",
+        ar: "البكتيريا التي تظهر تحت المجهر في شكل كروي هي ..",
+        options: ["Streptococci", "Staphylococci", "Salmonella", "a & b"],
+        correct: 3,
+        explanation: "كل من العقديات (Streptococci) والعنقوديات (Staphylococci) ذات شكل كروي (Cocci)."
+    },
+    {
+        id: 48,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "All of the following may be the shape of bacteria except ..",
+        ar: "كل مما يلي يمكن أن يكون شكلًا للبكتيريا ما عدا ..",
+        options: ["Cocci", "Bacilli", "Spiral", "Square"],
+        correct: 3,
+        explanation: "الأشكال الشائعة للبكتيريا كروية، عصوية، حلزونية؛ الشكل المربع غير معتاد."
+    },
+    {
+        id: 49,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The rod shape bacteria mean the bacteria are ..",
+        ar: "البكتيريا ذات الشكل العصوي تعني أن البكتيريا ..",
+        options: ["Cocci shape", "Bacilli shape", "Spiral shape", "Cluster shape"],
+        correct: 1,
+        explanation: "البكتيريا العصوية تُسمى Bacilli."
+    },
+    {
+        id: 50,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Bacteria appear under microscope as spirals are ..",
+        ar: "البكتيريا التي تظهر تحت المجهر بشكل حلزوني هي ..",
+        options: ["Clostridium botulinum", "Helicobacter pylori", "Salmonella typhi", "Streptococci"],
+        correct: 1,
+        explanation: "هليكوباكتر بيلوري (Helicobacter pylori) لها شكل حلزوني."
+    },
+    {
+        id: 51,
+        part: "Group A",
+        category: "Cell Biology",
+        en: "Prokaryote organelles ........",
+        ar: "الخلايا بدائية النواة ........",
+        options: [
+            "Has no nucleus",
+            "Has a nucleus",
+            "Has 80s ribosomes",
+            "All of the above"
+        ],
+        correct: 0,
+        explanation: "الخلايا البدائية لا تحتوي على نواة حقيقية، بل منطقة نووية فقط."
+    },
+    {
+        id: 52,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "Bacteria can exist as ......",
+        ar: "يمكن أن توجد البكتيريا على شكل ......",
+        options: ["Single cells", "Chains or clusters", "In pairs", "All of the above"],
+        correct: 3,
+        explanation: "يمكن أن توجد البكتيريا منفردة أو في أزواج أو سلاسل أو عناقيد."
+    },
+    {
+        id: 53,
+        part: "Group A",
+        category: "Genetics",
+        en: ".. is the formation of complementary mRNA.",
+        ar: ".. هو تكوين mRNA مكمل.",
+        options: ["Transcription", "Protein synthesis", "Translation", "Mutation"],
+        correct: 0,
+        explanation: "النسخ (Transcription) هو تكوين RNA من قالب DNA."
+    },
+    {
+        id: 54,
+        part: "Group A",
+        category: "Genetics",
+        en: ".. is the formation of polypeptide chain by ribosome.",
+        ar: ".. هو تكوين سلسلة عديد الببتيد بواسطة الريبوسوم.",
+        options: ["Transcription", "Protein synthesis", "Translation", "Mutation"],
+        correct: 2,
+        explanation: "الترجمة (Translation) هي تكوين البروتين من mRNA على الريبوسومات."
+    },
+    {
+        id: 55,
+        part: "Group A",
+        category: "Genetics",
+        en: "Plasmid function is production of ..",
+        ar: "وظيفة البلازميد هي إنتاج ..",
+        options: ["Toxins", "RNA synthesis", "Enzymes", "Mutation"],
+        correct: 0,
+        explanation: "بعض البلازميدات تحمل جينات إنتاج السموم أو عوامل الضراوة."
+    },
+    {
+        id: 56,
+        part: "Group A",
+        category: "Genetics",
+        en: "Plasmid help in resistance of bacteria to antibodies by production of ..",
+        ar: "تساعد البلازميدات في مقاومة البكتيريا للمضادات الحيوية عن طريق إنتاج ..",
+        options: ["Toxins", "Bacitracin", "B-lactamases", "All of the above"],
+        correct: 2,
+        explanation: "إنزيمات البيتا لاكتاماز تكسر بعض المضادات الحيوية مثل البنسلين."
+    },
+    {
+        id: 57,
+        part: "Group A",
+        category: "Genetics",
+        en: "Plasmid function includes ..",
+        ar: "من وظائف البلازميدات ..",
+        options: ["Biochemical reactions", "Molecular biology", "Conjugation", "All of the above"],
+        correct: 3,
+        explanation: "البلازميدات تُستخدم في الاقتران البكتيري وفي التطبيقات المعملية والوظائف الحيوية."
+    },
+    {
+        id: 58,
+        part: "Group A",
+        category: "Genetics",
+        en: "............... Sudden stable heritable change in nucleotide sequence in DNA called ....",
+        ar: "التغير المفاجئ والثابت والقابل للتوريث في تسلسل النيوكليوتيدات في الـ DNA يُسمى ....",
+        options: ["Conjugation", "Deletion", "Mutation", "Insertion"],
+        correct: 2,
+        explanation: "الطفرة (Mutation) هي تغيير ثابت في تسلسل الـ DNA يمكن توريثه."
+    },
+    {
+        id: 59,
+        part: "Group A",
+        category: "Genetics",
+        en: "..... is a mistakes or errors that occur during DNA replication is ..",
+        ar: "الأخطاء التي تحدث أثناء تضاعف الـ DNA تُسمى ..",
+        options: ["Spontaneous mutation", "Conjugation", "Induced mutation", "Transformation"],
+        correct: 0,
+        explanation: "الطفرة التلقائية (Spontaneous) تحدث دون تعرّض لعامل مُحَفِّز خارجي."
+    },
+    {
+        id: 60,
+        part: "Group A",
+        category: "Genetics",
+        en: "..................... responsible for biochemical reactions of bacteria as sugar fermentation.",
+        ar: "..................... مسؤول عن التفاعلات الكيميائية الحيوية للبكتيريا مثل تخمير السكريات.",
+        options: ["Nuclear body", "Mitochondria", "Cell wall", "Plasmid"],
+        correct: 4 - 1, // index 3
+        explanation: "الجينات المحمولة على البلازميدات قد تشفّر لإنزيمات خاصة لتخمر السكريات."
+    } ,
+
+    {
+        id: 61,
+        part: "Group A",
+        category: "Genetics",
+        en: "Physical mutagens like ..",
+        ar: "من أمثلة المطفرات الفيزيائية ..",
+        options: ["UV rays", "Modify bases", "Base analogues", "All of the above"],
+        correct: 0,
+        explanation: "الأشعة فوق البنفسجية (UV) من أهم المطفرات الفيزيائية المؤثرة على الـ DNA."
+    },
+    {
+        id: 62,
+        part: "Group A",
+        category: "Genetics",
+        en: "Chemical mutagens include ..",
+        ar: "من أمثلة المطفرات الكيميائية ..",
+        options: ["Modify bases", "Intercalating agents", "U.V rays", "a & b"],
+        correct: 3,
+        explanation: "المواد المعدِّلة للقواعد والعوامل البينية (Intercalating agents) مطفرات كيميائية معروفة."
+    },
+    {
+        id: 63,
+        part: "Group A",
+        category: "Genetics",
+        en: "The induced mutation is caused by ..",
+        ar: "الطفرة المستحثة تحدث بسبب ..",
+        options: ["Plasmid", "Spontaneous mutation", "Conjugation", "Mutagens"],
+        correct: 3,
+        explanation: "الطفرات المستحثة تنتج عن تعرّض الخلايا لعوامل مطفِّرة خارجية (Mutagens)."
+    },
+    {
+        id: 64,
+        part: "Group A",
+        category: "Genetics",
+        en: "In transcription (RNA synthesis) occur replacement of each ..",
+        ar: "في عملية النسخ (تخليق الـ RNA) يحدث استبدال لكل ..",
+        options: ["T by U", "U by T", "U by G", "T by A"],
+        correct: 0,
+        explanation: "في الـ RNA يُستبدل الثايمين (T) باليوراسيل (U) عند النسخ من الـ DNA."
+    },
+    {
+        id: 65,
+        part: "Group A",
+        category: "Genetics",
+        en: "Spontaneous mutation is a genetic changes that occur in the absence of ..",
+        ar: "الطفرة التلقائية هي تغيرات وراثية تحدث في غياب ..",
+        options: ["Plasmid", "Spores", "Bacteriophage", "Mutagens"],
+        correct: 3,
+        explanation: "الطفرات التلقائية تحدث دون وجود عامل مطفِّر معروف."
+    },
+    {
+        id: 66,
+        part: "Group A",
+        category: "Genetics",
+        en: "When the recipient cell uptake of free DNA released into the environment when another bacterial cell dies and lyses called .........",
+        ar: "عند التقاط الخلية المستقبِلة لـ DNA حر من البيئة بعد موت وتحلل خلية بكتيرية أخرى تُسمى العملية .........",
+        options: ["Transduction", "Transformation", "Conjugation", "Binary fission"],
+        correct: 1,
+        explanation: "التحوّل (Transformation) هو إدخال DNA حر من الوسط إلى خلية بكتيرية."
+    },
+    {
+        id: 67,
+        part: "Group A",
+        category: "Genetics",
+        en: "When DNA from two bacteria come together in one cell via infection of bacterial cell by bacteriophages called .....",
+        ar: "عندما يجتمع DNA من بكتيريتين في خلية واحدة عبر إصابة خلية ببكتيريوفاج تُسمى العملية .....",
+        options: ["Transduction", "Transformation", "Conjugation", "Binary fission"],
+        correct: 0,
+        explanation: "النقل (Transduction) يتم بواسطة الفاج الذي يحمل DNA من خلية لأخرى."
+    },
+    {
+        id: 68,
+        part: "Group A",
+        category: "Genetics",
+        en: "When occur mobilization of the bacterium's chromosome from one bacteria to another via sex pilli is called ...",
+        ar: "عند انتقال كروموسوم البكتيريا من خلية لأخرى عبر الـ sex pili تُسمى العملية ...",
+        options: ["Transduction", "Transformation", "Conjugation", "Binary fission"],
+        correct: 2,
+        explanation: "الاقتران (Conjugation) يعتمد على تكوين جسر بين الخلايا عبر الـ sex pili."
+    },
+    {
+        id: 69,
+        part: "Group A",
+        category: "Molecular Biology",
+        en: "In vitro amplification of specific sequence of nucleotides ..",
+        ar: "التضاعف المعملي (In vitro) لتسلسل محدد من النيوكليوتيدات هو ..",
+        options: ["DNA", "PCR", "RNA", "Conjugation"],
+        correct: 1,
+        explanation: "تفاعل البلمرة المتسلسل (PCR) يُستخدم لتضخيم تسلسلات DNA محددة معمليًا."
+    },
+    {
+        id: 70,
+        part: "Group A",
+        category: "Molecular Biology",
+        en: "PCR is important in ..",
+        ar: "يُعَد تفاعل البلمرة المتسلسل (PCR) مهمًا في ..",
+        options: ["Microbial diseases", "Genetic disease", "Medico-legal purposes", "All of the above"],
+        correct: 3,
+        explanation: "يُستخدم PCR في تشخيص الأمراض المعدية والوراثية وفي الأغراض الجنائية."
+    },
+    {
+        id: 71,
+        part: "Group A",
+        category: "Molecular Biology",
+        en: "Each PCR cycle include .....",
+        ar: "كل دورة من دورات الـ PCR تشمل .....",
+        options: ["Denaturation", "Extension", "Annealing", "All of the above"],
+        correct: 3,
+        explanation: "دورة PCR تتكون من: الانفصال (Denaturation)، التهيئة (Annealing)، والتمديد (Extension)."
+    },
+    {
+        id: 72,
+        part: "Group A",
+        category: "Molecular Biology",
+        en: "In Polymerase Chain Reaction, the synthesis of new strand of nucleic acid occur at temperature ....",
+        ar: "في تفاعل البلمرة المتسلسل، يحدث تكوين السلسلة الجديدة من الحمض النووي عند درجة حرارة ....",
+        options: ["72 °C", "95 °C", "55 °C", "121 °C"],
+        correct: 0,
+        explanation: "يعمل إنزيم Taq polymerase بكفاءة عند حوالي 72 درجة مئوية."
+    },
+    {
+        id: 73,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The bacteria that growing in presence or absence of O₂ called ..",
+        ar: "البكتيريا التي تنمو في وجود أو غياب الأكسجين تُسمى ..",
+        options: ["Obligatory aerobes", "Obligatory anaerobes", "Facultative anaerobes", "Microaerophilic"],
+        correct: 2,
+        explanation: "البكتيريا اللاهوائية الاختيارية يمكنها النمو مع أو بدون الأكسجين."
+    },
+    {
+        id: 74,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The bacteria grow only in presence of O₂ ..",
+        ar: "البكتيريا التي تنمو فقط في وجود الأكسجين تُسمى ..",
+        options: ["Obligatory aerobes", "Obligatory anaerobes", "Facultative anaerobes", "Microaerophilic"],
+        correct: 0,
+        explanation: "الهوائيات الإجبارية تحتاج للأكسجين للنمو."
+    },
+    {
+        id: 75,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The bacteria grow only in absence of O₂ ..",
+        ar: "البكتيريا التي تنمو فقط في غياب الأكسجين تُسمى ..",
+        options: ["Obligatory aerobes", "Obligatory anaerobes", "Facultative anaerobes", "Microaerophilic"],
+        correct: 1,
+        explanation: "اللاهوائيات الإجبارية لا تتحمل وجود الأكسجين."
+    },
+    {
+        id: 76,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Clostridia considered as ..",
+        ar: "بكتيريا الكلوستريديا تُعتبر ..",
+        options: ["Facultative anaerobes", "Obligatory anaerobes", "Obligatory aerobes", "Microaerophilic"],
+        correct: 1,
+        explanation: "معظم أنواع Clostridium لاهوائية إجبارية وتكوّن أبواغًا."
+    },
+    {
+        id: 77,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "............ is the constituent of amino acids and nucleic acids.",
+        ar: "............ هو مكوّن أساسي في الأحماض الأمينية والأحماض النووية.",
+        options: ["Oxygen", "Nitrogen", "Carbon dioxide", "All of the above"],
+        correct: 1,
+        explanation: "النيتروجين عنصر أساسي في تركيب الأحماض الأمينية والـ DNA/RNA."
+    },
+    {
+        id: 78,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "............ is the main constituent of organic compounds and cell water.",
+        ar: "............ هو المكوّن الرئيسي للمركبات العضوية وماء الخلية.",
+        options: ["Oxygen", "Nitrogen", "Hydrogen", "All of the above"],
+        correct: 0,
+        explanation: "الأكسجين يدخل في تركيب معظم المركبات العضوية والماء داخل الخلايا."
+    },
+    {
+        id: 79,
+        part: "Group A",
+        category: "General Microbiology",
+        en: "............ is the constituent of phospholipids.",
+        ar: "............ يدخل في تركيب الفسفوليبيدات.",
+        options: ["Oxygen", "Nitrogen", "Hydrogen", "Phosphorus"],
+        correct: 3,
+        explanation: "الفسفور عنصر أساسي في تركيب الفسفوليبيدات المكوِّنة للأغشية."
+    },
+    {
+        id: 80,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Obligatory aerobic bacteria grow only in presence of ..",
+        ar: "البكتيريا الهوائية الإجبارية تنمو فقط في وجود ..",
+        options: ["O₂", "Small conc. O₂", "CO₂", "Or absence (+/- O₂)"],
+        correct: 0,
+        explanation: "تحتاج البكتيريا الهوائية الإجبارية إلى وجود الأكسجين الجوي للنمو."
+    },
+        {
+        id: 81,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "............ prefer cold temperatures (0–20 °C).",
+        ar: "............ تفضّل درجات الحرارة الباردة (0–20 درجة مئوية).",
+        options: ["Psychrophilic bacteria", "Mesophilic bacteria", "Thermophilic bacteria", "None of the above"],
+        correct: 0,
+        explanation: "البكتيريا المحبّة للبرودة (Psychrophilic) تنمو في درجات الحرارة المنخفضة."
+    },
+    {
+        id: 82,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "............ prefer moderate temperatures (20–40 °C).",
+        ar: "............ تفضّل درجات الحرارة المعتدلة (20–40 درجة مئوية).",
+        options: ["Psychrophilic bacteria", "Mesophilic bacteria", "Thermophilic bacteria", "None of the above"],
+        correct: 1,
+        explanation: "معظم البكتيريا الممرِضة للإنسان من النوع متوسط الحرارة (Mesophilic)."
+    },
+    {
+        id: 83,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "............ can survive in temperature higher than 40 °C.",
+        ar: "............ يمكنها البقاء في درجات حرارة أعلى من 40 درجة مئوية.",
+        options: ["Psychrophilic bacteria", "Mesophilic bacteria", "Thermophilic bacteria", "None of the above"],
+        correct: 2,
+        explanation: "البكتيريا المحبة للحرارة (Thermophilic) تنمو في درجات حرارة مرتفعة."
+    },
+    {
+        id: 84,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Optimum temperature for most of the pathogenic bacteria is ........",
+        ar: "درجة الحرارة المثلى لمعظم البكتيريا الممرِضة هي ........",
+        options: ["47 °C", "37 °C", "27 °C", "None of these"],
+        correct: 1,
+        explanation: "معظم البكتيريا الممرِضة للإنسان تنمو أفضل عند 37 درجة (درجة حرارة الجسم)."
+    },
+    {
+        id: 85,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "For most bacteria, the optimum pH is between .......",
+        ar: "لأغلب البكتيريا يكون الـ pH الأمثل بين .......",
+        options: ["6.0 and 6.5", "7.0 and 7.5", "7.0 and 7.2", "6.5 and 7.5"],
+        correct: 3,
+        explanation: "معظم البكتيريا الممرِضة تفضّل وسطًا قريبًا من المتعادل بين 6.5 و7.5."
+    },
+    {
+        id: 86,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The optimum pH of ............ is between 6.5 and 7.5.",
+        ar: "الـ pH الأمثل لـ ............ يكون بين 6.5 و7.5.",
+        options: ["Neutrophilic bacteria", "Human tissue", "Acidophilic bacteria", "None of the above"],
+        correct: 0,
+        explanation: "البكتيريا المتعادلة (Neutrophiles) تنمو في pH قريب من المتعادل."
+    },
+    {
+        id: 87,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "............ prefer acidic environments of 6.0 or below.",
+        ar: "............ تفضّل بيئات حمضية عند 6.0 أو أقل.",
+        options: ["Neutrophilic bacteria", "Alkaline bacteria", "Acidophilic bacterial", "All of the above"],
+        correct: 2,
+        explanation: "البكتيريا المحبة للحموضة تنمو في pH منخفض."
+    },
+    {
+        id: 88,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Bacterial toxins are toxins produced by bacteria, promote ............ and disease.",
+        ar: "السموم البكتيرية تُنتَج بواسطة البكتيريا وتُسهم في حدوث ............ والمرض.",
+        options: ["Immunity", "Vitamins", "Infection", "Minerals"],
+        correct: 2,
+        explanation: "السموم البكتيرية تزيد من شدة العدوى وحدوث الأعراض المرضية."
+    },
+    {
+        id: 89,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Nature of bacterial exotoxins is ............",
+        ar: "طبيعة السموم الخارجية (Exotoxins) البكتيرية هي ............",
+        options: ["Lipopolysaccharides", "a & b", "Protein", "None of the above"],
+        correct: 2,
+        explanation: "السموم الخارجية غالبًا بروتينات يمكن تعطيلها بالحرارة وتحويلها إلى ذوفانات."
+    },
+    {
+        id: 90,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The bacteria that causes diphtheria produce ............ that promote infection and disease.",
+        ar: "البكتيريا المسببة للدفتيريا تُنتج ............ تعزز العدوى والمرض.",
+        options: ["Toxin", "Enzyme", "Vitamin", "Growth factor"],
+        correct: 0,
+        explanation: "Corynebacterium diphtheriae تفرز ذيفانًا قويًا يسبب الأعراض الجهازية."
+    },
+    {
+        id: 91,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The type of toxins that produced by Gram negative bacteria are ..",
+        ar: "نوع السموم التي تنتجها البكتيريا سالبة الجرام عادةً هو ..",
+        options: ["Exotoxins", "A & B", "Endotoxins", "None of the above"],
+        correct: 2,
+        explanation: "السموم الداخلية (Endotoxins) هي جزء من جدار البكتيريا سالبة الجرام (LPS)."
+    },
+    {
+        id: 92,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The exotoxin are ............",
+        ar: "السموم الخارجية (Exotoxins) هي ............",
+        options: ["Extracellular component", "Ribonucleic acid", "Part of cell wall", "Peptidoglycan"],
+        correct: 0,
+        explanation: "السموم الخارجية تُفرَز إلى الوسط المحيط بالخلايا البكتيرية."
+    },
+    {
+        id: 93,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The condition called Hemolytic uremic syndrome caused by ............",
+        ar: "متلازمة انحلال الدم اليوريمية يسببها ............",
+        options: ["ETEC", "STEC", "EIEC", "EAEC"],
+        correct: 1,
+        explanation: "إشريكية قولونية المفرِزة لشيغا توكسين (STEC/EHEC) قد تسبب HUS."
+    },
+    {
+        id: 94,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "E. coli produce pink colonies on ............",
+        ar: "إشريكية القولون تنتج مستعمرات وردية اللون على ............",
+        options: ["MacConkey agar", "Blood agar", "CLED agar", "Nutrient agar"],
+        correct: 0,
+        explanation: "على MacConkey تخمّر اللاكتوز فتظهر بمستعمرات وردية."
+    },
+    {
+        id: 95,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "E. coli are gram negative bacteria arranged in ............ shape.",
+        ar: "إشريكية القولون بكتيريا سالبة الجرام ذات شكل ............",
+        options: ["Cluster", "Rod", "Cocci", "Comma"],
+        correct: 1,
+        explanation: "E. coli عصوية سالبة الجرام."
+    },
+    {
+        id: 96,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "The endotoxin are ............ in nature.",
+        ar: "السموم الداخلية بطبيعتها تكون ............",
+        options: ["Cytoplasmic membrane", "Peptidoglycan", "Protein", "Lipopolysaccharides"],
+        correct: 3,
+        explanation: "السموم الداخلية هي جزء من LPS في جدار البكتيريا سالبة الجرام."
+    },
+    {
+        id: 97,
+        part: "Group A",
+        category: "Infection Control",
+        en: "Bactericidal agent means ............",
+        ar: "العامل البكتريوسيدي يعني ............",
+        options: ["Inhibit growth of bacteria", "Stimulate growth of bacteria", "Kills bacteria", "All of these"],
+        correct: 2,
+        explanation: "العامل القاتل للبكتيريا يؤدي إلى موتها مباشرة."
+    },
+    {
+        id: 98,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "Scalded skin syndrome caused by ............ infection.",
+        ar: "متلازمة الجلد الملسوخ (Scalded skin) تُسبَّب بعدوى ............",
+        options: ["Staphylococcus aureus", "Escherichia coli", "Staphylococcus epidermidis", "Streptococcus pyogenes"],
+        correct: 0,
+        explanation: "تنتج بسبب توكسين تقشير الجلد من S. aureus."
+    },
+    {
+        id: 99,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "............ is the antibiotic of choice to treat strep pharyngitis.",
+        ar: "............ هو المضاد الحيوي المفضل لعلاج التهاب البلعوم العقدي.",
+        options: ["Cefotaxime", "Amoxicillin", "Ciprofloxacin", "Ceftazidime"],
+        correct: 1,
+        explanation: "البنسلين أو الأموكسيسيللين هما الاختيار الأول غالبًا لالتهاب الحلق العقدي."
+    },
+    {
+        id: 100,
+        part: "Group A",
+        category: "Bacteriology",
+        en: "ET E. coli causing ..",
+        ar: "Enterotoxigenic E. coli تسبب ..",
+        options: ["Food contamination", "Travelers' diarrhea", "Pneumonia", "Glomerulonephritis"],
+        correct: 1,
+        explanation: "النوع ETEC سبب شائع لإسهال المسافرين."
+    },
+    {
+        id: 101,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "The causative agent of T.B is ..",
+        ar: "العامل المسبب لمرض الدرن (T.B) هو ..",
+        options: ["E. coli", "Mycobacterium tuberculosis", "S. pyogenes", "Staphylococci"],
+        correct: 1,
+        explanation: "السل الرئوي تسببه Mycobacterium tuberculosis."
+    },
+    {
+        id: 102,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "By Ziehl–Neelsen Mycobacterium bacteria appear ........",
+        ar: "تظهر بكتيريا الميكوبكتيريوم بواسطة صبغة زييل–نيلسن بلون ........",
+        options: ["Violet", "Pink in blue background", "Blue with pink background", "Red"],
+        correct: 1,
+        explanation: "البكتيريا المقاومة للحمض تظهر حمراء/وردية على خلفية زرقاء."
+    },
+    {
+        id: 103,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "For isolation of Mycobacterium bacteria, we use specific media called ...",
+        ar: "لعزل بكتيريا الميكوبكتيريوم نستخدم وسطًا خاصًا يُسمى ...",
+        options: ["MacConkey agar", "Blood agar", "Lowenstein–Jensen media", "Nutrient agar"],
+        correct: 2,
+        explanation: "وسط لوفنشتاين–جنيسن يُستخدم لعزل المتفطرات."
+    },
+    {
+        id: 104,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "When BACTEC 128 vial is inoculated, mycobacterium if present utilize the ..",
+        ar: "عند تلقيح أنبوبة BACTEC 128، في حالة وجود الميكوبكتيريوم فإنها تستهلك ..",
+        options: ["¹⁴C", "¹⁴B", "⁴C", "¹⁴CO₂"],
+        correct: 0,
+        explanation: "يُستخدم ¹⁴C الموسوم لرصد نمو المتفطرات في أنظمة BACTEC."
+    },
+    {
+        id: 105,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "Tuberculin test considered positive if the diameter of the induration is ........ mm or more.",
+        ar: "يُعتبَر اختبار التيوبركلين إيجابيًا إذا كان قطر التَصَلُّب ........ مم أو أكثر.",
+        options: ["5", "3", "10", "48"],
+        correct: 2,
+        explanation: "في البالغين الأصحاء غالبًا تعتبر 10 مم أو أكثر إيجابية (حسب عوامل الخطورة)."
+    },
+    {
+        id: 106,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "After intradermal injection of tuberculin, the transverse diameter of induration is measured ........ hours later.",
+        ar: "بعد الحقن داخل الجلد بالتيوبركلين، يُقاس قطر التَصَلُّب بعد ........ ساعة.",
+        options: ["24–36", "24–36", "12–24", "48–72"],
+        correct: 3,
+        explanation: "يُقاس التفاعل عادة بعد 48–72 ساعة من الحقن."
+    },
+    {
+        id: 107,
+        part: "Group B",
+        category: "Immunology",
+        en: "The vaccine used for prevention against mycobacterium infection is ........ vaccine.",
+        ar: "اللقاح المستخدم للوقاية من عدوى الميكوبكتيريوم هو لقاح ........",
+        options: ["Killed", "Subunit", "Live attenuated", "Like part"],
+        correct: 2,
+        explanation: "لقاح BCG عبارة عن بكتيريا حية مُوهَنَة."
+    },
+    {
+        id: 108,
+        part: "Group B",
+        category: "Immunology",
+        en: "The route of administration of BCG vaccine is ........",
+        ar: "طريق إعطاء لقاح BCG هو ........",
+        options: ["I/D", "S/C", "I/M", "I/V"],
+        correct: 0,
+        explanation: "يُعطى لقاح BCG داخل الجلد (Intradermal)."
+    },
+    {
+        id: 109,
+        part: "Group B",
+        category: "Immunology",
+        en: "BCG vaccine is indicated for ...........................",
+        ar: "يُوصَى بإعطاء لقاح BCG لـ ...........................",
+        options: ["Tuberculin positive", "T.B infected", "Tuberculin negative", "None of them"],
+        correct: 2,
+        explanation: "يُعطى غالبًا للأشخاص سلبية اختبار التيوبركلين كوقاية."
+    },
+    {
+        id: 110,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "Tuberculin test is used for diagnosis of T.B by injection of purified protein derivatives ........",
+        ar: "يُستخدم اختبار التيوبركلين لتشخيص الدرن بحقن مشتقات البروتين المنقاة ........",
+        options: ["Subcutaneous (S/C)", "Intradermal (I/D)", "Intravenous (IV)", "Intramuscular (IM)"],
+        correct: 1,
+        explanation: "اختبار مانتو يُجرى بحقن التيوبركلين داخل الجلد."
+    },
+    {
+        id: 111,
+        part: "Group B",
+        category: "Immunology",
+        en: "BCG vaccine is used for ..",
+        ar: "يُستخدم لقاح BCG لـ ..",
+        options: ["Vaccination for tuberculosis", "Vaccination for diphtheria", "Vaccination for cholera", "None of these"],
+        correct: 0,
+        explanation: "يُستخدم BCG للوقاية من مرض السل."
+    },
+    {
+        id: 112,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "Food poisoning with 1–6 hours incubation periods is due to ..",
+        ar: "التسمم الغذائي ذو فترة الحضانة من 1–6 ساعات غالبًا يكون بسبب ..",
+        options: ["Salmonella enteritidis", "Staphylococcus aureus", "Clostridium botulinum", "None of these"],
+        correct: 1,
+        explanation: "سموم S. aureus المسبقة في الطعام تسبب أعراضًا سريعة خلال ساعات."
+    },
+    {
+        id: 113,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "Food poisoning caused by toxin is due to ..",
+        ar: "التسمم الغذائي الناتج عن السم نفسه يكون بسبب ..",
+        options: ["Clostridium botulinum", "Salmonella enteritidis", "Staphylococcus aureus", "ASC"],
+        correct: 0,
+        explanation: "الكلوستريديوم البوتولينيوم ينتج ذيفانًا قويًا يسبب شللًا بوتولينيًا."
+    },
+    {
+        id: 114,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "Tuberculosis is transmitted by ..",
+        ar: "يُنتقل مرض السل عن طريق ..",
+        options: ["Droplet spread", "Through skin and mucous membrane", "Sexual route", "Needle stick injuries"],
+        correct: 0,
+        explanation: "السل ينتقل أساسًا عن طريق الرذاذ التنفسي من المرضى المصابين."
+    },
+    {
+        id: 115,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "For diagnosis of T.B, the sample is used for preparation of direct film examination is obtained from .....",
+        ar: "لتشخيص السل، تُؤخَذ العينة لتحضير مسحة مباشرة من .....",
+        options: ["Blood", "Serum", "Sputum", "Urine"],
+        correct: 2,
+        explanation: "يُفحص البلغم لصبغة زييل–نيلسن للكشف عن عصيات الدرن."
+    },
+    {
+        id: 116,
+        part: "Group B",
+        category: "Bacteriology",
+        en: "Rheumatism is a side effect of persistent ........ infection.",
+        ar: "الروماتيزم أحد المضاعفات المتأخرة لعدوى ........ المستمرة.",
+        options: ["Staphylococcus", "Escherichia coli", "Streptococcus", "Pseudomonas"],
+        correct: 2,
+        explanation: "الحمى الروماتيزمية تحدث بعد عدوى Streptococcus pyogenes في الحلق."
+    },
+    {
+        id: 117,
+        part: "Group B",
+        category: "Immunology",
+        en: "The specific test used for diagnosis of rheumatic fever is ..........",
+        ar: "الاختبار النوعي المستخدم لتشخيص الحمى الروماتيزمية هو ..........",
+        options: ["Oxidase", "Catalase", "Coagulase", "ASOT"],
+        correct: 3,
+        explanation: "اختبار مضاد الستربتوليزين O (ASO/ASOT) يقيس الأجسام المضادة لسموم العقديات."
+    },
+    {
+        id: 118,
+        part: "Group B",
+        category: "Infection Control",
+        en: "When instructing the patient to collect a sputum specimen, the medical assistant should tell the patient to get ..........",
+        ar: "عند تعليم المريض جمع عينة بلغم، يجب إرشاده للحصول على ..........",
+        options: [
+            "Sputum specimens in the evening",
+            "Sputum from morning coughing",
+            "Saliva & mucous at the morning",
+            "Sputum & nasal secretion at morning"
+        ],
+        correct: 1,
+        explanation: "أفضل عينة بلغم تكون من السعال الصباحي العميق من الشعب الهوائية."
+    },
+
+    // يمكنك إكمال بقية الأسئلة (119–195) بنفس النمط لو احتجتهم لاحقًا
+
+    {
+        id: 119,
+        part: "Group B",
+        category: "Virology",
+        en: "The genome of Hepatitis B virus is ..",
+        ar: "المادة الوراثية لفيروس التهاب الكبد B هي ..",
+        options: ["ssRNA", "dsDNA", "ssDNA", "dsRNA"],
+        correct: 1,
+        explanation: "فيروس HBV يمتلك DNA مزدوج السلسلة جزئيًا."
+    },
+    {
+        id: 120,
+        part: "Group B",
+        category: "Virology",
+        en: "The recent oral drug used for treatment of HCV is ......",
+        ar: "أحدث دواء فموي يُستخدم لعلاج فيروس C هو ......",
+        options: ["Ribavirin", "Declanza", "Interferon", "Levagol"],
+        correct: 1,
+        explanation: "داكلاتاسفير (Declanza) أحد الأدوية الحديثة ضمن العلاج المباشر للـ HCV."
+    },
+    {
+        id: 121,
+        part: "Group B",
+        category: "Virology",
+        en: "The HBcAb IgM test used to detect ..",
+        ar: "اختبار HBcAb IgM يُستخدم للكشف عن ..",
+        options: ["Recent viral infection", "Chronicity", "Past infection", "Active viral replication"],
+        correct: 0,
+        explanation: "وجود HBcAb IgM يدل على عدوى حديثة بفيروس HBV."
+    },
+    {
+        id: 122,
+        part: "Group B",
+        category: "Virology",
+        en: "The viruses possess ..",
+        ar: "الفيروسات تمتلك ..",
+        options: ["Both DNA and RNA", "DNA or RNA", "Plasmid", "Capsid only"],
+        correct: 1,
+        explanation: "كل فيروس يحمل نوعًا واحدًا فقط من الأحماض النووية: DNA أو RNA."
+    },
+    {
+        id: 123,
+        part: "Group B",
+        category: "Virology",
+        en: "The infectious part of the virus is ..",
+        ar: "الجزء المُعدِي من الفيروس هو ..",
+        options: ["Capsid", "Plasmid", "Nucleic acid", "Envelope"],
+        correct: 2,
+        explanation: "الحمض النووي الفيروسي هو الذي يحمل المعلومات المسببة للعدوى."
+    },
+    {
+        id: 124,
+        part: "Group B",
+        category: "Virology",
+        en: "........ protect of the viral nucleic acid against nucleases.",
+        ar: "........ يحمي الحمض النووي الفيروسي ضد النيوكلياز.",
+        options: ["Nucleic acid", "Envelop", "Capsid", "Epitopes"],
+        correct: 2,
+        explanation: "الكابسيد البروتيني يحمي الحمض النووي الفيروسي من التلف."
+    },
+    {
+        id: 125,
+        part: "Group B",
+        category: "Virology",
+        en: "Complex virus such as ..",
+        ar: "فيروس ذو تركيب معقد مثل ..",
+        options: ["Influenza virus", "Bacteriophage", "HCV virus", "HIV virus"],
+        correct: 1,
+        explanation: "البكتيريوفاج له تركيب معقد برأس وذيل وألياف."
+    },
+    {
+        id: 126,
+        part: "Group B",
+        category: "Virology",
+        en: "........ is the part of virus that responsible for adherent of virus to host cell.",
+        ar: "........ هو الجزء من الفيروس المسؤول عن الالتصاق بالخلية المضيفة.",
+        options: ["Nucleic acid", "Envelop", "Capsid", "Epitopes"],
+        correct: 3,
+        explanation: "الحلقات/المستضدات السطحية (Epitopes) تتعرف على مستقبلات الخلية المضيفة."
+    },
+    {
+        id: 127,
+        part: "Group B",
+        category: "Virology",
+        en: "RNA virus are the viruses that possess ........ as their genetic material.",
+        ar: "الفيروسات RNA هي الفيروسات التي تمتلك ........ كمادة وراثية.",
+        options: ["DNA", "RNA", "Plasmid", "DNA & RNA"],
+        correct: 1,
+        explanation: "فيروسات الـ RNA تحمل حمضًا نوويًا ريبوزيًا كجزيء وراثي."
+    },
+    {
+        id: 128,
+        part: "Group B",
+        category: "Virology",
+        en: "RNA virus can't self-replicate so replication occur in ........ of infected cell.",
+        ar: "فيروسات الـ RNA لا تتضاعف ذاتيًا لذا يتم التضاعف في ........ الخلية المصابة.",
+        options: ["Cytoplasm", "Plasmid", "Nucleus", "Cell wall"],
+        correct: 0,
+        explanation: "معظم فيروسات RNA تتكاثر في السيتوبلازم."
+    },
+    {
+        id: 129,
+        part: "Group B",
+        category: "Virology",
+        en: "The DNA viruses are self-replicate as it occurs inside nucleus, so the mutation rate is ......",
+        ar: "فيروسات الـ DNA تتضاعف داخل النواة لذلك معدل الطفرة فيها يكون ......",
+        options: ["High", "Absent", "Moderate", "Low"],
+        correct: 3,
+        explanation: "تضاعف DNA يتم بدقة أعلى غالبًا، لذا معدل الطفرات أقل من أغلب فيروسات RNA."
+    },
+    {
+        id: 130,
+        part: "Group B",
+        category: "Virology",
+        en: "Herpes viruses and poxviruses are ........ viruses.",
+        ar: "فيروسات الهربس والجدري هي فيروسات ........",
+        options: ["DNA", "RNA", "Bacteriophage", "DNA & RNA"],
+        correct: 0,
+        explanation: "الهربس والبوكس فيروسات ذات جينوم DNA."
+    },
+    {
+        id: 131,
+        part: "Group B",
+        category: "Virology",
+        en: "Picornaviruses and Orthomyxoviruses are ........ viruses.",
+        ar: "بيكورنا وفيروسات الأورثوميكسو هي فيروسات ........",
+        options: ["DNA", "RNA", "Bacteriophage", "DNA & RNA"],
+        correct: 1,
+        explanation: "كل من البيكورنا والأورثوميكسو من فيروسات RNA."
+    },
+    {
+        id: 132,
+        part: "Group B",
+        category: "Immunology",
+        en: "Detection of antiviral Abs of recent infection by serological test depends on detection of ........",
+        ar: "الكشف عن الأجسام المضادة الفيروسية لعدوى حديثة يعتمد على كشف ........",
+        options: ["IgG", "IgM", "IgA", "IgE"],
+        correct: 1,
+        explanation: "IgM ترتفع في العدوى الحادة/الحديثة."
+    },
+    {
+        id: 133,
+        part: "Group B",
+        category: "Virology",
+        en: "COVID-19 viruses are ........ viruses.",
+        ar: "فيروسات كوفيد-19 هي فيروسات ........",
+        options: ["DNA", "RNA", "Bacteriophage", "DNA & RNA"],
+        correct: 1,
+        explanation: "فيروسات كورونا هي فيروسات RNA مغلّفة."
+    },
+    {
+        id: 134,
+        part: "Group B",
+        category: "Immunology",
+        en: "The 1st generation of COVID-19 vaccine are ........ vaccine.",
+        ar: "الجيل الأول من لقاحات كوفيد-19 هي لقاحات ........",
+        options: ["Killed", "Subunit", "Like part", "Live attenuated"],
+        correct: 1,
+        explanation: "أول اللقاحات كانت أساسًا لقاحات تحت وحدية/مستضدية (مثل mRNA أو protein subunit)."
+    },
+    {
+        id: 135,
+        part: "Group B",
+        category: "Virology",
+        en: "Loss of taste and smell is a common clinical signs of ..........................",
+        ar: "فقدان حاستي التذوق والشم من العلامات الشائعة ل..........................",
+        options: ["Mycobacterium", "E. coli", "HIV", "COVID-19"],
+        correct: 3,
+        explanation: "فقدان الشم والتذوق علامة مميزة في العديد من حالات كوفيد-19."
+    },
+    {
+        id: 136,
+        part: "Group B",
+        category: "Virology",
+        en: "The nucleic acid of HAV is .....",
+        ar: "المادة الوراثية لفيروس التهاب الكبد A هي .....",
+        options: ["ss-DNA", "ds-RNA", "ds-DNA", "ss-RNA"],
+        correct: 3,
+        explanation: "فيروس HAV من فيروسات RNA أحادية السلسلة."
+    },
+    {
+        id: 137,
+        part: "Group B",
+        category: "Virology",
+        en: "The COVID-19 virus belonged to ............... family.",
+        ar: "فيروس كوفيد-19 ينتمي إلى عائلة ...............",
+        options: ["Picornaviridae", "Coronaviridae", "Hepadnaviridae", "Flaviviridae"],
+        correct: 1,
+        explanation: "SARS‑CoV‑2 ينتمي إلى عائلة Coronaviridae."
+    },
+    {
+        id: 138,
+        part: "Group B",
+        category: "Immunology",
+        en: "The HIV attacks .....",
+        ar: "فيروس HIV يهاجم .....",
+        options: ["CD5 of T helper cells", "CD4 of T helper cells", "CD4 of T cytotoxic cells", "CD6 of T cytotoxic cells"],
+        correct: 1,
+        explanation: "المستقبِل الرئيسي لـ HIV هو CD4 على خلايا T المساعدة."
+    },
+    {
+        id: 139,
+        part: "Group B",
+        category: "Virology",
+        en: "The chance of development of chronic hepatitis in HBsAg infection is ......",
+        ar: "احتمال تطور التهاب كبد مزمن في عدوى HBsAg هو ......",
+        options: ["10%", "20%", "50%", "40%"],
+        correct: 0,
+        explanation: "تقريبًا 10% من عدوى HBV في البالغين قد تصبح مزمنة."
+    },
+    {
+        id: 140,
+        part: "Group B",
+        category: "Virology",
+        en: "The chance of development of chronic hepatitis in HCV infection is ......",
+        ar: "احتمال تطور التهاب كبد مزمن في عدوى HCV هو ......",
+        options: ["10%", "20%", "50%", "40%"],
+        correct: 2,
+        explanation: "حوالي نصف حالات عدوى HCV تصبح مزمنة إن لم تُعالَج."
+    },
+    {
+        id: 141,
+        part: "Group B",
+        category: "Virology",
+        en: "The chance of development of chronic hepatitis of HDV in case of coinfection of HDV with HBsAg is ............",
+        ar: "احتمال تطور التهاب كبد مزمن في حالة العدوى المزدوجة HDV مع HBsAg هو ............",
+        options: ["< 10%", "< 20%", "< 80%", "< 5%"],
+        correct: 2,
+        explanation: "العدوى المشتركة بـ HDV مع HBV تزيد بشكل كبير خطر المرض الشديد والمزمن."
+    },
+    {
+        id: 142,
+        part: "Group B",
+        category: "Virology",
+        en: "All of the following viral infection will develop chronicity except ..........",
+        ar: "كل العدوى الفيروسية التالية قد تُطوِّر مزمنة ما عدا ..........",
+        options: ["HBsAg", "HDV", "HCV", "HAV"],
+        correct: 3,
+        explanation: "التهاب الكبد A لا يتحول إلى التهاب مزمن عادة."
+    },
+    {
+        id: 143,
+        part: "Group B",
+        category: "Virology",
+        en: "Serological diagnosis of HCV by ELISA depend on detection of ........ in blood.",
+        ar: "التشخيص المصلي لفيروس C بـ ELISA يعتمد على كشف ........ في الدم.",
+        options: ["Bacteria", "Antigen", "Fungi", "Antibodies"],
+        correct: 3,
+        explanation: "يُكشف عن الأجسام المضادة لـ HCV في المصل."
+    },
+    {
+        id: 144,
+        part: "Group B",
+        category: "Virology",
+        en: "The old drugs for treatment of HCV infection are ...",
+        ar: "الأدوية القديمة لعلاج عدوى HCV هي ...",
+        options: ["Sovaldii", "Declanza", "Harvonii", "Ribavirin & Interferon"],
+        correct: 3,
+        explanation: "كان العلاج التقليدي يعتمد على الإنترفيرون والريبافيرين."
+    },
+    {
+        id: 145,
+        part: "Group B",
+        category: "Virology",
+        en: "For diagnosis of HBV infection ........ is limited to estimate virus load before, during and after treatment.",
+        ar: "لتشخيص عدوى HBV يُستخدم ........ لتقدير الحمل الفيروسي قبل وأثناء وبعد العلاج.",
+        options: ["PCR", "HBsAg", "HBsAb", "HBcAb"],
+        correct: 0,
+        explanation: "PCR الكمي للـ HBV DNA يُستخدم لقياس الحمل الفيروسي."
+    },
+    {
+        id: 146,
+        part: "Group B",
+        category: "Virology",
+        en: "............. is a test used for screening of all persons before operation, endoscopy and blood transfusion.",
+        ar: "............. اختبار يُستخدم لفحص الأشخاص قبل العمليات والتنظير ونقل الدم.",
+        options: ["HBeAg", "HBsAg", "HBsAb", "HBcAb"],
+        correct: 1,
+        explanation: "HBsAg يُستخدم لفحص حاملي فيروس B قبل الإجراءات الطبية ونقل الدم."
+    },
+    {
+        id: 147,
+        part: "Group B",
+        category: "Virology",
+        en: "The positive result of ........ test mean active viral replication high infectivity.",
+        ar: "النتيجة الإيجابية لاختبار ........ تعني تكاثرًا فيروسيًا نشطًا وعدوى عالية.",
+        options: ["HBeAg", "HBsAg", "HBsAb", "HBcAb"],
+        correct: 0,
+        explanation: "HBeAg الإيجابي يشير عادة إلى عدوى نشطة وإمكانية عدوى أعلى."
+    },
+    {
+        id: 148,
+        part: "Group B",
+        category: "Virology",
+        en: "........ is a test used for detection of recovery patient, past infection & immunity against HBV.",
+        ar: "........ اختبار يُستخدم للكشف عن الشفاء والعدوى السابقة والمناعة ضد HBV.",
+        options: ["HBeAg", "HBsAg", "HBsAb", "HBcAb"],
+        correct: 2,
+        explanation: "HBsAb الإيجابي يدل على مناعة مكتسبة بعد عدوى أو تطعيم."
+    },
+    {
+        id: 149,
+        part: "Group B",
+        category: "Virology",
+        en: "........ is a test used for detection of HBV recent viral infection.",
+        ar: "........ اختبار يُستخدم للكشف عن عدوى حديثة بفيروس B.",
+        options: ["HBeAb", "HBsAb", "HBcAg-IgG", "HBcAb-IgM"],
+        correct: 3,
+        explanation: "وجود HBcAb-IgM يدل على عدوى حديثة بفيروس HBV."
+    },
+    {
+        id: 150,
+        part: "Group B",
+        category: "Virology",
+        en: "........ positive result mean less viral replication and low infectivity.",
+        ar: "النتيجة الإيجابية لـ ........ تعني تقلص التكاثر الفيروسي وانخفاض العدوى.",
+        options: ["HBeAb", "HBsAb", "HBcAb-IgG", "HBcAb-IgM"],
+        correct: 0,
+        explanation: "HBeAb الإيجابي غالبًا يدل على مرحلة أقل نشاطًا من العدوى."
+    },
+    {
+        id: 151,
+        part: "Group B",
+        category: "Immunology",
+        en: ".............. vaccine give active immunization against HBV infection for life.",
+        ar: "لقاح .............. يعطي مناعة فعالة ضد عدوى HBV مدى الحياة تقريبًا.",
+        options: ["BCG", "Recombinant", "Like part", "None of them"],
+        correct: 1,
+        explanation: "لقاح HBV الحالي غالبًا مُعاد تركيبته (Recombinant HBsAg)."
+    },
+    {
+        id: 152,
+        part: "Group B",
+        category: "Immunology",
+        en: "The number of doses against HBV infection are ........ that giving active immunization for life.",
+        ar: "عدد جرعات لقاح HBV التي تمنح مناعة فعالة مدى الحياة هو ........",
+        options: ["One", "Three", "Two", "Four"],
+        correct: 1,
+        explanation: "الجدول الشائع هو ثلاث جرعات (0، 1، 6 أشهر)."
+    },
+    {
+        id: 153,
+        part: "Group B",
+        category: "Immunology",
+        en: "........ given after exposure to HBV infected blood as needle stick injuries.",
+        ar: "........ يُعطى بعد التعرض لدم ملوث بـ HBV مثل وخز الإبرة.",
+        options: ["Active immunization", "Passive immunization", "Like part vaccine", "Recombinant"],
+        correct: 1,
+        explanation: "يُستخدم الـ HBIG (مناعة سلبية) مع اللقاح بعد التعرض."
+    },
+    {
+        id: 154,
+        part: "Group C",
+        category: "Infection Control",
+        en: "Vector such as ................. can aid in nosocomial infections.",
+        ar: "ناقل مثل ................. يمكن أن يساهم في العدوى المكتسبة من المستشفيات.",
+        options: ["Cats", "Patient and visitors", "Flies & fleas", "Medical persons"],
+        correct: 2,
+        explanation: "الذباب والبراغيث قد تنقل الميكروبات في البيئة الطبية."
+    },
+    {
+        id: 155,
+        part: "Group C",
+        category: "Infection Control",
+        en: "............... considers as animate source of infection that can aid in increasing nosocomial infections.",
+        ar: "............... يُعتبَر مصدرًا حيًا للعدوى قد يساهم في زيادة العدوى nosocomial.",
+        options: ["Visitors", "Hospital construction", "Catheter", "Water"],
+        correct: 0,
+        explanation: "الزوار قد ينقلون الميكروبات إلى المرضى داخل المستشفى."
+    },
+    {
+        id: 156,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "Neurological manifestations are side effect of ...............",
+        ar: "الأعراض العصبية تُعتبَر من المضاعفات الجانبية لـ ...............",
+        options: ["Botulism", "Brucellosis", "Cholera", "Puerperal sepsis"],
+        correct: 0,
+        explanation: "سموم البوتيولينيوم تسبب شللًا عصبيًا."
+    },
+    {
+        id: 157,
+        part: "Group C",
+        category: "Infection Control",
+        en: "The surgical hand wash lasted for ..",
+        ar: "غسل الأيدي الجراحي يستمر لمدة ..",
+        options: ["1–2 minutes", "2–3 minutes", "1 minute", "30 second"],
+        correct: 1,
+        explanation: "توصيات كثيرة توصي بغسل اليدين الجراحي لمدة 2–3 دقائق."
+    },
+    // لو محتاج أكمل من 158 لحد 195 كمان، قول: "كمّل الباقي لحد 195"
+    {
+        id: 158,
+        part: "Group C",
+        category: "Virology",
+        en: "All of the following are characters of Hepatitis virus (A) except ...............",
+        ar: "كل ما يلي من خصائص فيروس التهاب الكبد A ما عدا ...............",
+        options: ["ssRNA", "Transmitted by the enteric route", "Turn to chronic", "No carriers"],
+        correct: 2,
+        explanation: "فيروس HAV لا يتحول عادة إلى عدوى مزمنة ولا توجد حالة حامل مزمن."
+    },
+    {
+        id: 159,
+        part: "Group C",
+        category: "Virology",
+        en: "All of the following are characters of Hepatitis virus (E) except .....",
+        ar: "كل ما يلي من خصائص فيروس التهاب الكبد E ما عدا .....",
+        options: ["Enteric transmission", "Water-borne infection", "Belong to Hepevirus", "There is a vaccine for prophylaxis"],
+        correct: 3,
+        explanation: "لا يوجد لقاح واسع الاستخدام للوقاية من HEV في معظم البلاد."
+    },
+    {
+        id: 160,
+        part: "Group C",
+        category: "Virology",
+        en: "All of the following are characters of Hepatitis virus (B) except .....",
+        ar: "كل ما يلي من خصائص فيروس التهاب الكبد B ما عدا .....",
+        options: ["Presence of vaccine for prophylaxis", "Transmitted by all rout", "ss-DNA nucleic acid", "Leads to cirrhosis of the liver and HCC"],
+        correct: 2,
+        explanation: "فيروس HBV يحتوي على DNA مزدوج السلسلة جزئيًا وليس ss‑DNA."
+    },
+    {
+        id: 161,
+        part: "Group C",
+        category: "Virology",
+        en: "All of the following are characters of Hepatitis virus (D) except ...",
+        ar: "كل ما يلي من خصائص فيروس التهاب الكبد D ما عدا ...",
+        options: ["Co-infection with HBV", "No chronicity", "Super-infection with HBV", "Prevented by HBV prophylaxis"],
+        correct: 1,
+        explanation: "عدوى HDV غالبًا مرتبطة بحالات مزمنة أو شديدة مع HBV."
+    },
+    {
+        id: 162,
+        part: "Group C",
+        category: "Virology",
+        en: "All of the following are characters of Hepatitis virus (C) except ......",
+        ar: "كل ما يلي من خصائص فيروس التهاب الكبد C ما عدا ......",
+        options: ["ssRNA", "Available of immunization", "Transmitted by parenteral rout", "Chronic active hepatitis"],
+        correct: 1,
+        explanation: "لا يوجد حتى الآن لقاح متاح تجاريًا واسعًا لـ HCV."
+    },
+    {
+        id: 163,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "The organism causing pyogenic tonsillitis is .....",
+        ar: "الكائن المسبب لالتهاب اللوز الصديدي هو .....",
+        options: ["Staphylococcus aureus", "Streptococcus pyogens", "Salmonella typhi", "Vibrio cholera"],
+        correct: 1,
+        explanation: "السبب الأشهر لالتهاب اللوز الحاد الصديدي هو Streptococcus pyogenes."
+    },
+    {
+        id: 164,
+        part: "Group C",
+        category: "Immunology",
+        en: "........ is a specific test used for diagnosis of rheumatic fever.",
+        ar: "........ هو اختبار نوعي يُستخدم لتشخيص الحمى الروماتيزمية.",
+        options: ["ESR", "ALT", "CRP", "ASO"],
+        correct: 3,
+        explanation: "ASO (أو ASOT) يقيس الأجسام المضادة لسموم العقديات المسببة للحمى الروماتيزمية."
+    },
+    {
+        id: 165,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "Complications of streptococcal tonsillitis is .....",
+        ar: "من مضاعفات التهاب اللوز بالعقديات .....",
+        options: ["Rheumatic fever", "Enteric fever", "Botulism", "Hemolytic syndrome"],
+        correct: 0,
+        explanation: "الحمى الروماتيزمية من أهم المضاعفات غير الصديدية لعدوى الحلق بالعقديات."
+    },
+    
+    {
+        id: 166,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "........ form of arthritis that affects the joints, eyes, urethra caused by staphylococcus spp.",
+        ar: "........ شكل من التهاب المفاصل يصيب المفاصل والعين والإحليل يُنسب في السؤال إلى Staphylococcus spp.",
+        options: ["Reiter disease", "Enteric fever", "Endocarditis", "Meningitis"],
+        correct: 0,
+        explanation: "متلازمة رايتر (التهاب المفاصل التفاعلي) مثال لالتهاب مفاصل مع أعراض خارج مفصلية."
+    },
+    {
+        id: 167,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "Streptococcus pyogenes causes .....",
+        ar: "تسبب Streptococcus pyogenes .....",
+        options: ["Sore throat", "Pneumonia", "Tuberculosis", "Diarrhea"],
+        correct: 0,
+        explanation: "Streptococcus pyogenes سبب شائع لالتهاب الحلق/البلعوم الحاد."
+    },
+    {
+        id: 168,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "Pharyngitis is an infection of the oropharynx caused by .........",
+        ar: "التهاب البلعوم هو عدوى في البلعوم الفموي يسببها عادة .........",
+        options: ["Streptococcus pyogenes", "Streptococcus agalactia", "Streptococcus viridance", "Streptococcus pnemonia"],
+        correct: 0,
+        explanation: "السبب البكتيري الأشهر لالتهاب البلعوم الحاد هو S. pyogenes."
+    },
+    {
+        id: 169,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "........ is the antibiotic of choice for treatment of strep pharyngitis.",
+        ar: "........ هو المضاد الحيوي المفضل لعلاج التهاب البلعوم بالعقديات.",
+        options: ["Amoxicillin", "Methicillin", "Flummox", "Gentamycin"],
+        correct: 0,
+        explanation: "البنسلين أو الأموكسيسيللين هما الاختيار الأول غالبًا."
+    },
+    {
+        id: 170,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "The streptococcus pyogenes caused ........ on blood agar.",
+        ar: "تسبب Streptococcus pyogenes نوع ........ على وسط Blood agar.",
+        options: ["B-hemolysis", "a-hemolysis", "Q-hemolysis", "E-hemolysis"],
+        correct: 0,
+        explanation: "S. pyogenes تُحدِث انحلال دم تام (β-hemolysis)."
+    },
+    {
+        id: 171,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "The a-hemolysis caused by streptococcus viridance growth on blood agar characterized by ........",
+        ar: "الانحلال الدموي ألفا الناتج عن Streptococcus viridans على Blood agar يتميز بـ ........",
+        options: ["Complete hemolysis", "Partial hemolysis", "No hemolysis", "Pink coloration"],
+        correct: 1,
+        explanation: "الانحلال ألفا يكون جزئيًا مع تلون مخضر حول المستعمرات."
+    },
+    {
+        id: 172,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "The B-hemolysis caused by streptococcus agalactia after growth on blood agar mean ...................",
+        ar: "الانحلال الدموي بيتا الناتج عن Streptococcus agalactiae على Blood agar يعني ...................",
+        options: ["Complete hemolysis", "Partial hemolysis", "Increase number of RBCs", "Pink coloration"],
+        correct: 0,
+        explanation: "الانحلال بيتا هو انحلال تام لكريات الدم الحمراء حول المستعمرة."
+    },
+    {
+        id: 173,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "The scarlet fever is caused by ........",
+        ar: "الحمى القرمزية تسببها ........",
+        options: ["Streptococcus pyogenes", "Streptococcus agalactia", "Streptococcus viridance", "Streptococcus pnemonia"],
+        correct: 0,
+        explanation: "تنتج الحمى القرمزية عن الذيفان الخارجي لـ S. pyogenes."
+    },
+    {
+        id: 174,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "........ is a disease that can affect the heart, joints, brain, and skin.",
+        ar: "........ مرض يمكن أن يؤثر في القلب والمفاصل والدماغ والجلد.",
+        options: ["Rheumatic fever", "Appendicitis", "Reiter disease", "Necrotising fasciitis"],
+        correct: 0,
+        explanation: "الحمى الروماتيزمية من مضاعفات عدوى العقديات غير المعالجة."
+    },
+    {
+        id: 175,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "Enterotoxigenic E. coli causing ....",
+        ar: "Enterotoxigenic E. coli تسبب ....",
+        options: ["Food contamination", "Travelers' diarrhea", "Pneumonia", "Glomerulonephritis"],
+        correct: 1,
+        explanation: "ETEC سبب شائع لإسهال المسافرين."
+    },
+    {
+        id: 176,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "E. coli is normally lives in the ........ of both healthy people and animals.",
+        ar: "تعيش E. coli طبيعيًا في ........ لكل من الأشخاص الأصحاء والحيوانات.",
+        options: ["Urinary system", "Intestine", "Lung", "Skin"],
+        correct: 1,
+        explanation: "E. coli جزء من الفلورا الطبيعية للأمعاء الغليظة."
+    },
+    {
+        id: 177,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "Shiga toxin of E. coli that cause food contamination produced by .........",
+        ar: "سم الشيغا لإشريكية القولون المسبِّب لتلوث الطعام يُنتج بواسطة .........",
+        options: ["ETEC", "STEC", "EIEC", "EAEC"],
+        correct: 1,
+        explanation: "النوع STEC/EHEC ينتج شيغا توكسين."
+    },
+    {
+        id: 178,
+        part: "Group C",
+        category: "Bacteriology",
+        en: "The condition of travelers' diarrhea caused by certain type of E. coli called .........",
+        ar: "إسهال المسافرين يسببه نوع معين من E. coli يُسمى .........",
+        options: ["ETEC", "EPIC", "EIEC", "EAEC"],
+        correct: 0,
+        explanation: "إسهال المسافرين يرتبط غالبًا بـ Enterotoxigenic E. coli (ETEC)."
+    },
+    {
+        id: 179,
+        part: "Group C",
+        category: "General Microbiology",
+        en: "In symptoms of an E. coli infection, the word of low grade fever mean the temperature is around ........",
+        ar: "في أعراض عدوى E. coli، تعبير الحمى منخفضة الدرجة يعني أن الحرارة تقريبًا ........",
+        options: ["37.5 °C", "38.5 °C", "39 °C", "Over 40 °C"],
+        correct: 0,
+        explanation: "الحمى منخفضة الدرجة تكون عادة حول 37.5–38 مئوية."
+    },
+    {
+        id: 180,
+        part: "Group C",
+        category: "Immunology",
+        en: "Antibodies that can cross the placenta are ........",
+        ar: "الأجسام المضادة التي يمكنها عبور المشيمة هي ........",
+        options: ["IgG", "IgM", "IgE", "IgD"],
+        correct: 0,
+        explanation: "IgG هو الوحيد من الأيزوتايب الذي يعبر المشيمة بوضوح."
+    },
+    {
+        id: 181,
+        part: "Group C",
+        category: "Immunology",
+        en: "Antibodies that are present on mucous membranes are ...............",
+        ar: "الأجسام المضادة الموجودة على الأغشية المخاطية هي ...............",
+        options: ["IgG", "IgM", "IgE", "IgA"],
+        correct: 3,
+        explanation: "IgA الإفرازي هو الأهم في الإفرازات المخاطية (اللعاب، الدموع، إفرازات الجهاز التنفسي والهضمي)."
+    },
+    {
+        id: 182,
+        part: "Group C",
+        category: "Immunology",
+        en: "Antibodies that are present in type I hypersensitivity & endoparasite are ...........",
+        ar: "الأجسام المضادة الموجودة في فرط الحساسية من النوع الأول والطفيليات الداخلية هي ...........",
+        options: ["IgG", "IgM", "IgE", "IgD"],
+        correct: 2,
+        explanation: "IgE يرتبط بردود الفعل التحسسية الفورية ومقاومة بعض الطفيليات."
+    },
+    {
+        id: 183,
+        part: "Group C",
+        category: "Immunology",
+        en: "The antibodies that are produced in the primary immune response are ...............",
+        ar: "الأجسام المضادة التي تُنتَج في الاستجابة المناعية الأولية هي ...............",
+        options: ["IgG", "IgM", "IgE", "IgD"],
+        correct: 1,
+        explanation: "IgM هو أول أيزوتايب يُنتج عادة في الاستجابة الأولية."
+    },
+    {
+        id: 184,
+        part: "Group C",
+        category: "Immunology",
+        en: "Phagocytosis is one of the function of .....",
+        ar: "البلعمة إحدى وظائف .....",
+        options: ["Macrophages", "NK cells", "T helper cells", "T cytotoxic cells"],
+        correct: 0,
+        explanation: "البلعميات الكبيرة (Macrophages) والنيتروفيل تقومان بالبلعمة."
+    },
+    {
+        id: 185,
+        part: "Group C",
+        category: "Infection Control",
+        en: "Which of the following is a 75% of hospital acquired infection?",
+        ar: "أي مما يلي يشكّل تقريبًا 75٪ من العدوى المكتسبة في المستشفى؟",
+        options: ["Urinary tract infection", "Surgical wound infection", "Lower respiratory tract infection", "Gastrointestinal infections"],
+        correct: 0,
+        explanation: "عدوى المسالك البولية من أكثر أنواع عدوى المستشفيات شيوعًا."
+    },
+    {
+        id: 186,
+        part: "Group C",
+        category: "Infection Control",
+        en: "Factors influencing the nosocomial infection are ......................................",
+        ar: "العوامل المؤثرة في العدوى المكتسبة من المستشفى هي ......................................",
+        options: ["Patient susceptibility", "Microbial agent", "Environment factors", "All the above"],
+        correct: 3,
+        explanation: "قابلية المريض، نوع الميكروب، وعوامل البيئة جميعها تؤثر على معدل العدوى."
+    },
+    {
+        id: 187,
+        part: "Group C",
+        category: "Infection Control",
+        en: "The sequences of taking off PPE are ..",
+        ar: "ترتيب خلع معدات الوقاية الشخصية (PPE) يكون ..",
+        options: [
+            "Gown, Goggles or face shield, Mask then Gloves",
+            "Gloves, Goggles, Mask then Gown",
+            "Gown, Mask, Goggles or face shield then Gloves",
+            "Gloves, Goggles or face shield, Gown then Mask"
+        ],
+        correct: 3,
+        explanation: "يُفضَّل نزع القفازات أولًا ثم واقي العين/الوجه، ثم الجاون، وأخيرًا الكمامة لتقليل التلوث."
+    },
+    {
+        id: 188,
+        part: "Group C",
+        category: "Infection Control",
+        en: "An infection that is acquired in the hospital is called ..",
+        ar: "العدوى التي تُكتسب داخل المستشفى تُسمى ..",
+        options: ["Parasite", "Pathogen", "Nosocomial", "Anaerobic"],
+        correct: 2,
+        explanation: "العدوى nosocomial هي عدوى مكتسبة من الرعاية الصحية."
+    },
+    {
+        id: 189,
+        part: "Group C",
+        category: "Immunology",
+        en: "Antibodies are secreted by ..............",
+        ar: "الأجسام المضادة تُفرَز بواسطة ..............",
+        options: ["T helper lymphocytes", "Plasma cells", "Cytotoxic T lymphocytes", "Phagocytes"],
+        correct: 1,
+        explanation: "الخلايا البلازمية (Plasma cells) هي خلايا B المتمايزة المنتجة للأجسام المضادة."
+    },
+    {
+        id: 190,
+        part: "Group C",
+        category: "Virology",
+        en: "........ in a person already chronically infected with HBV accelerates progression to cirrhosis and liver failure.",
+        ar: "........ لدى شخص مصاب مزمنًا بـ HBV يسرّع تطور التليف وفشل الكبد.",
+        options: ["Super infection with HCV", "Super infection with HDV", "Super infection with HBV", "Super infection with HAV"],
+        correct: 1,
+        explanation: "العدوى الفوقية بـ HDV في مرضى HBV المزمن تزيد خطورة التليف والفشل الكبدي."
+    },
+    {
+        id: 191,
+        part: "Group C",
+        category: "Immunology",
+        en: "The second line of defence include ..",
+        ar: "خط الدفاع الثاني يشمل ..",
+        options: ["Skin", "Inflammatory response", "Mucous membrane", "Saliva"],
+        correct: 1,
+        explanation: "الاستجابة الالتهابية وخلايا الدم البيضاء جزء من خط الدفاع الثاني غير النوعي."
+    },
+    {
+        id: 192,
+        part: "Group C",
+        category: "Immunology",
+        en: "Any substance (usually foreign) that binds specifically to an antibody, or a T cell receptor is called ........",
+        ar: "أي مادة (غالبًا غريبة) ترتبط نوعيًا بجسم مضاد أو بمستقبل خلية T تُسمى ........",
+        options: ["Antigen", "Antibody", "Antibiotics", "WBCs"],
+        correct: 0,
+        explanation: "المستضد (Antigen) هو ما يتعرف عليه الجهاز المناعي نوعيًا."
+    },
+    {
+        id: 193,
+        part: "Group C",
+        category: "Immunology",
+        en: "........ is the resistance that is transferred to a recipient artificially in a ready-made form.",
+        ar: "........ هي مناعة تُنقَل للمستقبِل صناعيًا في صورة جاهزة.",
+        options: ["Active immunity", "Passive immunity", "Vaccination", "Infection"],
+        correct: 1,
+        explanation: "المناعة السلبية تتحقق بإعطاء أجسام مضادة جاهزة."
+    },
+    {
+        id: 194,
+        part: "Group C",
+        category: "Immunology",
+        en: "Breastfeeding baby is form of .....................",
+        ar: "الرضاعة الطبيعية للطفل تُعَد صورة من صور .....................",
+        options: ["Active immunity", "Passive immunity", "Vaccination", "Infection"],
+        correct: 1,
+        explanation: "يحصل الطفل على IgA وأجسام مضادة أخرى جاهزة من لبن الأم (مناعة سلبية طبيعية)."
+    },
+    {
+        id: 195,
+        part: "Group C",
+        category: "Immunology",
+        en: "Vaccination of patient with a microbe or its antigens providing a form of advance protection (life long) is type of .....",
+        ar: "تطعيم المريض بميكروب أو مستضداته لتوفير حماية مسبقة (طويلة الأمد) هو نوع من .....",
+        options: ["Artificial active immunity", "Artificial passive immunity", "Natural passive immunity", "Natural active immunity"],
+        correct: 0,
+        explanation: "التطعيم هو صورة من صور المناعة النشطة الصناعية."
+    },
+    
+    {
+        id: 1,
+        part: "Group T",
+        category: "Immunology",
+        en: "Substances produced by T cells that react with antigens and prepare them for destruction.",
+        ar: "مواد تُنتجها الخلايا التائية تتفاعل مع المستضدات وتُهيئها للتدمير.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ الأجسام المضادة تُنتجها الخلايا البائية (B cells) وليس الخلايا التائية."
+    },
+    {
+        id: 2,
+        part: "Group T",
+        category: "Infection Control",
+        en: "Cleaning is a process that uses chemical agents or heat to eliminate many or all pathogenic microorganisms on inanimate objects, with the exception of bacterial spores.",
+        ar: "التنظيف عملية تستخدم عوامل كيميائية أو حرارة للقضاء على معظم الميكروبات الممرِضة على الأسطح الجامدة مع استثناء الأبواغ.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هذا تعريف التطهير (Disinfection)، التنظيف يزيل الأوساخ فقط."
+    },
+    {
+        id: 3,
+        part: "Group T",
+        category: "Infection Control",
+        en: "Disinfection is a process that uses chemical agents or heat to eliminate many or all pathogenic microorganisms on inanimate objects, with the exception of bacterial spores.",
+        ar: "التطهير عملية تستخدم عوامل كيميائية أو حرارة للقضاء على كثير أو كل الكائنات الممرِضة مع استثناء الأبواغ.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ التطهير لا يضمن القضاء على الأبواغ البكتيرية."
+    },
+    {
+        id: 4,
+        part: "Group T",
+        category: "Infection Control",
+        en: "Sterilization is the complete elimination or destruction of all forms of microbial life, including bacterial spores.",
+        ar: "التعقيم هو الإزالة أو التدمير الكامل لكل أشكال الحياة الميكروبية بما فيها الأبواغ.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ التعقيم يقتل جميع صور الميكروبات مع الأبواغ."
+    },
+    {
+        id: 5,
+        part: "Group T",
+        category: "Virology",
+        en: "Viruses are considered as living organisms, they are sometimes classified as microorganisms.",
+        ar: "تُعتبر الفيروسات كائنات حية وتُصنَّف ككائنات دقيقة.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة في هذا السياق؛ الفيروسات غير خلوية وتُعد على الحد بين الحي وغير الحي."
+    },
+    {
+        id: 6,
+        part: "Group T",
+        category: "General Microbiology",
+        en: "Living organism (such as bacteria, fungi, viruses) are small and seen with naked eye.",
+        ar: "الكائنات الحية مثل البكتيريا والفطريات والفيروسات صغيرة ويمكن رؤيتها بالعين المجردة.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ أغلب هذه الكائنات مجهرية لا تُرى بالعين المجردة."
+    },
+    {
+        id: 7,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacteria are unicellular organisms.",
+        ar: "البكتيريا كائنات وحيدة الخلية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ البكتيريا تتكوّن من خلية واحدة."
+    },
+    {
+        id: 8,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacteria are multicellular organisms.",
+        ar: "البكتيريا كائنات متعددة الخلايا.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ البكتيريا ليست متعددة الخلايا."
+    },
+    {
+        id: 9,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacteria are easily seen by naked eye.",
+        ar: "يمكن رؤية البكتيريا بسهولة بالعين المجردة.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ تحتاج إلى مجهر لرؤيتها."
+    },
+    {
+        id: 10,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The DNA of prokaryotes is linear.",
+        ar: "الـ DNA في بدائيات النوى يكون خطيًا.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ يكون غالبًا دائريًا في البكتيريا."
+    },
+        {
+        id: 11,
+        part: "Group T",
+        category: "Cell Biology",
+        en: "The eukaryotes contain 80S ribosomes.",
+        ar: "الخلايا حقيقية النواة تحتوي على ريبوسومات 80S.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ الريبوسومات السيتوبلازمية في حقيقيات النوى من نوع 80S."
+    },
+    {
+        id: 12,
+        part: "Group T",
+        category: "Cell Biology",
+        en: "The eukaryotes contain 70S ribosome while prokaryotes contain 80S ribosomes.",
+        ar: "الخلايا حقيقية النواة تحتوي على 70S بينما البدائية تحتوي على 80S.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ العكس هو الصحيح: بدائيات النوى 70S وحقيقيات النوى 80S."
+    },
+    {
+        id: 13,
+        part: "Group T",
+        category: "Cell Biology",
+        en: "Plant, animal & human cells are prokaryotes.",
+        ar: "الخلايا النباتية والحيوانية والإنسانية خلايا بدائية النواة.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ كلها خلايا حقيقية النواة."
+    },
+    {
+        id: 14,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Some bacteria have capsule.",
+        ar: "بعض أنواع البكتيريا تمتلك كبسولة.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ الكبسولة موجودة في بعض الأنواع وليست في جميعها."
+    },
+    {
+        id: 15,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "All the bacteria can form spores.",
+        ar: "كل أنواع البكتيريا يمكنها تكوين أبواغ.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ تكوين الأبواغ يقتصر على أجناس معينة مثل Clostridium وBacillus."
+    },
+    {
+        id: 16,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Clostridium tetani are spore forming bacteria.",
+        ar: "Clostridium tetani من البكتيريا المُكوِّنة للأبواغ.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ تكون أبواغًا طرفية مقاومة."
+    },
+    {
+        id: 17,
+        part: "Group T",
+        category: "Virology",
+        en: "Viruses can replicate inside the living and non-living cells.",
+        ar: "يمكن للفيروسات أن تتضاعف داخل خلايا حية وغير حية.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ تحتاج دائمًا خلية حية للتضاعف."
+    },
+    {
+        id: 18,
+        part: "Group T",
+        category: "Virology",
+        en: "Viruses are facultative intracellular parasite.",
+        ar: "الفيروسات طفيليات اختيارية داخل الخلايا.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هي طفيليات إجبارية داخل الخلايا (obligate intracellular)."
+    },
+    {
+        id: 19,
+        part: "Group T",
+        category: "Virology",
+        en: "The viruses possess only one type of nucleic acid.",
+        ar: "الفيروسات تمتلك نوعًا واحدًا فقط من الحمض النووي.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ إما DNA أو RNA، وليس كليهما."
+    },
+    {
+        id: 20,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacteria possess only one type of nucleic acid.",
+        ar: "البكتيريا تمتلك نوعًا واحدًا فقط من الحمض النووي.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ البكتيريا فيها DNA وجزيئات RNA مختلفة."
+    },
+    {
+        id: 21,
+        part: "Group T",
+        category: "Virology",
+        en: "Viruses are ultramicroscopic, measured by nanometer (nm).",
+        ar: "الفيروسات كائنات مجهرية للغاية وتُقاس بالنانومتر.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ غالبًا أحجامها من عشرات إلى مئات النانومتر."
+    },
+    {
+        id: 22,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The size of bacteria is measured in nanometers while the size of viruses is measured in microns.",
+        ar: "حجم البكتيريا يُقاس بالنانومتر بينما حجم الفيروسات بالميكرون.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ البكتيريا بالميكرومتر والفيروسات غالبًا بالنانومتر."
+    },
+    {
+        id: 23,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The DNA of bacteria is bound to protein.",
+        ar: "DNA البكتيريا مرتبط ببروتينات.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ يكون في صورة عارية نسبيًا مقارنةً بحقيقيات النوى."
+    },
+    {
+        id: 24,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacteria grow in number not in size.",
+        ar: "تنمو البكتيريا في العدد وليس في الحجم.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ الزيادة الأساسية تكون في عدد الخلايا بالانقسام."
+    },
+    {
+        id: 25,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The cell wall has important role in decides the ability of bacteria to be stained.",
+        ar: "له الجدار الخلوي دور مهم في تحديد قابلية البكتيريا للتلوين.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ تركيب الجدار (خاصة الببتيدوجليكان) مهم في صبغة جرام."
+    },
+    {
+        id: 26,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Gram positive bacteria cell wall contains only 5–10% peptidoglycan.",
+        ar: "جدار البكتيريا الموجبة لجرام يحتوي فقط على 5–10٪ ببتيدوجليكان.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ الموجبة لجرام تحتوي على نسبة عالية من الببتيدوجليكان."
+    },
+    {
+        id: 27,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The word cell envelope of bacteria mean capsule, cell wall and pilli.",
+        ar: "مصطلح الغلاف الخلوي في البكتيريا يعني الكبسولة والجدار الخلوي والبيلي.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ غالبًا يُقصد به الغشاء السيتوبلازمي والجدار وربما الكبسولة."
+    },
+    {
+        id: 28,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Cell wall can be destroyed by some drugs or agents leading to lysis of bacterial cell.",
+        ar: "يمكن تدمير الجدار الخلوي ببعض الأدوية أو العوامل مما يؤدي إلى تحلل الخلية البكتيرية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ مثل البنسلين الذي يستهدف تصنيع الجدار."
+    },
+    {
+        id: 29,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "By Gram stain, Gram negative bacteria appear violet under microscope.",
+        ar: "بصبغة جرام تظهر البكتيريا السالبة للجرام بنفسجية تحت المجهر.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ السالبة للجرام تظهر وردية/حمراء."
+    },
+    {
+        id: 30,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Flagella are long whiplike structure responsible for motility, arise from cell wall.",
+        ar: "الأسواط تراكيب طويلة تشبه السوط مسؤولة عن الحركة وتنشأ من الجدار الخلوي.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة جزئيًا؛ تنشأ من الغشاء السيتوبلازمي/القالب القاعدي وليس الجدار نفسه."
+    },
+        {
+        id: 31,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Flagella used by bacteria for sense a certain temperature and chemicals.",
+        ar: "تستخدم البكتيريا الأسواط للإحساس بدرجة الحرارة وبعض المواد الكيميائية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة جزئيًا؛ عن طريق الحركة الاتجاهية (taxis) تستجيب لمؤثرات كيميائية/حرارية."
+    },
+    {
+        id: 32,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacteria do not have a nucleus and their DNA is enclosed by a nuclear membrane.",
+        ar: "لا تمتلك البكتيريا نواة وDNA محاط بغشاء نووي.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ لا يوجد غشاء نووي، الـ DNA في منطقة نيوكليود غير محاطة بغشاء."
+    },
+    {
+        id: 33,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Food poisoning caused by Staphylococcus aureus.",
+        ar: "التسمم الغذائي يمكن أن تسببه Staphylococcus aureus.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ سموم S. aureus الحرارية تسبب قيء سريع."
+    },
+    {
+        id: 34,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacterial spore can resist drying, high temperatures, bactericidal agents, ultraviolet light and nutritional deprivation.",
+        ar: "الأبواغ البكتيرية يمكنها مقاومة الجفاف ودرجات الحرارة العالية والعوامل القاتلة للبكتيريا والأشعة فوق البنفسجية ونقص الغذاء.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ الأبواغ تراكيب شديدة المقاومة."
+    },
+    {
+        id: 35,
+        part: "Group T",
+        category: "Genetics",
+        en: "Plasmid are small circular DNA structures present inside the nuclear body and not involved in reproduction.",
+        ar: "البلازميدات تراكيب DNA دائرية صغيرة توجد داخل الجسم النووي ولا تشارك في التكاثر.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ البلازميدات خارج الكروموسوم (extrachromosomal) وقد تحمل جينات تفيد البكتيريا."
+    },
+    {
+        id: 36,
+        part: "Group T",
+        category: "Virology",
+        en: "Viruses contain two type of nucleic acid, DNA & RNA surrounded by a protein coat to protect it from adverse environmental conditions.",
+        ar: "الفيروسات تحتوي نوعين من الأحماض النووية DNA وRNA محاطين بغلاف بروتيني.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ الفيروس يحوي إما DNA أو RNA فقط."
+    },
+    {
+        id: 37,
+        part: "Group T",
+        category: "Virology",
+        en: "Viruses can not replicate by own self and depends on the machinery of the host cell for replication.",
+        ar: "لا يمكن للفيروسات أن تتضاعف ذاتيًا وتعتمد على آليات الخلية المضيفة.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ هي طفيليات داخل خلوية إجبارية."
+    },
+    {
+        id: 38,
+        part: "Group T",
+        category: "General Microbiology",
+        en: "Normal flora may become pathogenic when the immunity is lowered.",
+        ar: "الفلورا الطبيعية قد تتحول إلى ممرضة عند انخفاض المناعة.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ كثير من الميكروبات الانتهازية تنشط مع نقص المناعة."
+    },
+    {
+        id: 39,
+        part: "Group T",
+        category: "General Microbiology",
+        en: "Normal flora of intestine may cause urinary tract infection (UTI) like E. coli.",
+        ar: "الفلورا الطبيعية للأمعاء مثل E. coli قد تسبب عدوى الجهاز البولي.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ انتقال E. coli من الأمعاء لمجرى البول سبب شائع لعدوى UTI."
+    },
+    {
+        id: 40,
+        part: "Group T",
+        category: "Genetics",
+        en: "Plasmid responsible for biochemical reactions of bacteria as sugar fermentation.",
+        ar: "البلازميدات مسؤولة عن بعض التفاعلات الحيوية في البكتيريا مثل تخمير السكريات.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة في بعض الأنواع؛ تحمل جينات لإنزيمات إضافية."
+    },
+    {
+        id: 41,
+        part: "Group T",
+        category: "Genetics",
+        en: "Translation is the formation of polypeptide chain by ribosome.",
+        ar: "الترجمة هي تكوين سلسلة عديد الببتيد بواسطة الريبوسوم.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ هذه هي عملية الترجمة من mRNA إلى بروتين."
+    },
+    {
+        id: 42,
+        part: "Group T",
+        category: "Genetics",
+        en: "Tautomer's and intercalating agent can cause spontaneous mutation.",
+        ar: "أشكال التوتومر والعوامل البينية يمكن أن تسبب طفرات تلقائية.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هذه غالبًا من أسباب الطفرات المستحثة (induced)."
+    },
+    {
+        id: 43,
+        part: "Group T",
+        category: "Genetics",
+        en: "Base analogs is the insertion of molecules between the bases DNA.",
+        ar: "نظائر القواعد هي إدخال جزيئات بين قواعد الـ DNA.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هذه وظيفة العوامل البينية (intercalating agents)، أما النظائر فتستبدل القواعد."
+    },
+    {
+        id: 44,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacterial toxins are toxins produced by bacteria, promote reproduction.",
+        ar: "السموم البكتيرية مواد تنتجها البكتيريا وتعزز التكاثر.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ السموم تعزز العدوى والمرض وليس التكاثر."
+    },
+    {
+        id: 45,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Suitable temperature for bacterial growth is 37 °C.",
+        ar: "درجة الحرارة المناسبة لمعظم البكتيريا المرضية هي 37 درجة مئوية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة لمعظم البكتيريا الممرِضة للإنسان (mesophiles)."
+    },
+    {
+        id: 46,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Thermophilic bacteria can tolerate temperatures 45 °C.",
+        ar: "البكتيريا المحبة للحرارة يمكنها تحمل درجات حرارة 45 درجة مئوية أو أكثر.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ تنمو فوق 45° تقريبًا."
+    },
+    {
+        id: 47,
+        part: "Group T",
+        category: "Molecular Biology",
+        en: "The Polymerase Chain Reaction are important in typing of bacteria.",
+        ar: "تفاعل البلمرة المتسلسل مهم في تصنيف/تحديد نوع البكتيريا.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ PCR يُستخدم في التشخيص الجزيئي والتصنيف."
+    },
+    {
+        id: 48,
+        part: "Group T",
+        category: "Molecular Biology",
+        en: "During PCR test, the denaturation of nucleic acid is done at temperature 92 °C.",
+        ar: "أثناء اختبار PCR يتم فصل السلاسل عند 92 درجة مئوية.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة حسب النص؛ غالبًا تُذكر 95° كدرجة نموذجية."
+    },
+    {
+        id: 49,
+        part: "Group T",
+        category: "Genetics",
+        en: "The sudden stable heritable change in nucleotide sequence in DNA is called conjugation.",
+        ar: "التغير المفاجئ والثابت والقابل للتوريث في DNA يُسمى الاقتران.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هذا تعريف الطفرة (mutation)، الاقتران آلية لنقل الجينات."
+    },
+    {
+        id: 50,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Bacterial spores are highly resistant structures metabolically active, formed in response to unfavorable conditions after bacterial death.",
+        ar: "الأبواغ البكتيرية تراكيب شديدة المقاومة ونشطة أيضيًا تتكوّن بعد موت البكتيريا.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ الأبواغ خلايا كامنة (غير نشطة) تتكون قبل موت الخلية للمساعدة في البقاء."
+    },
+    {
+        id: 51,
+        part: "Group T",
+        category: "Genetics",
+        en: "Conjugation is a process that occurs between one living bacterial cell and other one dead.",
+        ar: "الاقتران عملية تحدث بين خلية بكتيرية حية وأخرى ميتة.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ الاقتران يحتاج إلى خليتين حيتين."
+    },
+    {
+        id: 52,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Mycobacterium tuberculosis (TB) is obligatory aerobes.",
+        ar: "Mycobacterium tuberculosis بكتيريا هوائية إجبارية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ تحتاج للأكسجين للنمو."
+    },
+    {
+        id: 53,
+        part: "Group T",
+        category: "General Microbiology",
+        en: "PO₄ enter in nucleic acids, nucleotides, phospholipids structure of bacterial cell.",
+        ar: "مجموعة الفوسفات تدخل في تركيب الأحماض النووية والنيوكليوتيدات والفسفوليبيدات في الخلية البكتيرية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ الفوسفات أساسي في DNA/RNA والفسفوليبيدات."
+    },
+    {
+        id: 54,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The exotoxin is weakly immunogenic and can be destroyed by heat > 60 °C.",
+        ar: "السموم الخارجية ضعيفة المناعية ويمكن تدميرها بالحرارة أعلى من 60°.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ exotoxins غالبًا شديدة المناعية ويمكن تحويلها إلى toxoids."
+    },
+    {
+        id: 55,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The endotoxin is lipopolysaccharide and weakly immunogenic.",
+        ar: "السموم الداخلية هي ليبوپوليسكرايد وضعيفة المناعية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ LPS ضعيف المناعية لكنه يسبب استجابات التهابية قوية."
+    },
+    {
+        id: 56,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The endotoxin are produced by Gram +ve and Gram -ve bacteria.",
+        ar: "السموم الداخلية تُنتج بواسطة بكتيريا موجبة وسالبة الجرام.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ ترتبط أساسًا بالبكتيريا سالبة الجرام."
+    },
+    {
+        id: 57,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Botulism is a food poisoning caused by consuming expired canned food containing spore of Clostridium.",
+        ar: "التسمم البوتوليني تسمم غذائي بسبب تناول أطعمة معلبة فاسدة تحتوي أبواغ كلوسريديم.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ الأبواغ تنبت وتنتج توكسين في الظروف اللاهوائية."
+    },
+    {
+        id: 58,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The MRSA treated with mupirocin.",
+        ar: "يتم علاج MRSA بالموبيروسين.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "تستخدم مراهم ميبيروسين موضعيًا لاستعمار MRSA بالأنف والجلد."
+    },
+    {
+        id: 59,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The streptococcus viridance is optochin sensitive.",
+        ar: "Streptococcus viridans حساسة للأوبتوكين.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هي مقاومة للأوبتوكين بينما S. pneumoniae حساسة."
+    },
+    {
+        id: 60,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The streptococcus pyogen is bacitracin sensitive and produce partial hemolysis on blood agar.",
+        ar: "Streptococcus pyogenes حساسة للباسيتراسين وتُحدث انحلالًا جزئيًا للدم على Blood agar.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ حساسة للباسيتراسين لكن تُحدث انحلالًا تامًا (β-hemolysis)."
+    },
+    {
+        id: 61,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The streptococcal pygen infection may cause suppurative or nonsuppurative infection.",
+        ar: "عدوى Streptococcus pyogenes قد تسبب التهابات صديدية وغير صديدية.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ مثل التهاب الحلق (صديدي) والحمى الروماتيزمية (غير صديدية)."
+    },
+    {
+        id: 62,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Methicillin & flummox is the antibiotic of choice to treat strep pharyngitis.",
+        ar: "الميثيسيللين وFlummox هما مضادا الاختيار لعلاج التهاب الحلق العقدي.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ الاختيار الأول عادة البنسلين أو الأموكسيسيللين."
+    },
+    {
+        id: 63,
+        part: "Group T",
+        category: "Immunology",
+        en: "CRP and ESR are specific testes used for diagnosis of rheumatic fever.",
+        ar: "CRP وESR اختبارات نوعية لتشخيص الحمى الروماتيزمية.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هي اختبارات غير نوعية للالتهاب، الاختبار النوعي ASO/ASOT."
+    },
+    {
+        id: 64,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "Mycobacterium bacteria by Ziehel-neelsen appear blue while other bacteria appear pink.",
+        ar: "تظهر بكتيريا الميكوبكتيريوم بصبغة زييل–نيلسن باللون الأزرق بينما الباقي وردي.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ المتفطرات تظهر حمراء/وردية والباقي أزرق."
+    },
+    {
+        id: 65,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "BACTEC system is a rapid and sensitive method for diagnosing tuberculosis.",
+        ar: "نظام BACTEC طريقة سريعة وحساسة لتشخيص الدرن.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ أنظمة BACTEC تسرّع كشف نمو المتفطرات."
+    },
+    {
+        id: 66,
+        part: "Group T",
+        category: "Bacteriology",
+        en: "The treatment of T.B patient lasts for 1 month in combination of Rifampin, Ethambutol, Streptomycin & Pyrazinamide.",
+        ar: "علاج مريض السل يستمر لمدة شهر واحد باستخدام ريفامبين وأثامبوتول وستربتومايسين وبيرازيناميد.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ العلاج القياسي يستمر عادة 6–9 أشهر على الأقل."
+    },
+    {
+        id: 67,
+        part: "Group T",
+        category: "Virology",
+        en: "The virus isolated on tissue culture and embryonated egg.",
+        ar: "يمكن عزل الفيروسات على مزارع الأنسجة والبيض المخصب.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ هذه من طرق زراعة كثير من الفيروسات."
+    },
+    {
+        id: 68,
+        part: "Group T",
+        category: "Immunology",
+        en: "First line of defense against pathogens uses mostly physical and chemical barriers such as skin and sweat.",
+        ar: "خط الدفاع الأول ضد الممرضات يعتمد على الحواجز الفيزيائية والكيميائية مثل الجلد والعرق.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ الجلد، المخاط، والمواد الكيميائية جزء من الخط الأول."
+    },
+    {
+        id: 69,
+        part: "Group T",
+        category: "Immunology",
+        en: "The recipient's immune system plays active role in passive immunity.",
+        ar: "يلعب جهاز المستقبل المناعي دورًا نشطًا في المناعة السلبية.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ في المناعة السلبية لا يُنتِج المستقبل الأجسام المضادة بنفسه."
+    },
+    {
+        id: 70,
+        part: "Group T",
+        category: "Immunology",
+        en: "In passive immunity, there is no antigenic stimulus. Instead, pre-formed ready made form antibodies are administered.",
+        ar: "في المناعة السلبية لا يوجد تنبيه مستضدي، بل تُعطى أجسام مضادة جاهزة.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ مثالها إعطاء الغاما جلوبولين."
+    },
+    {
+        id: 71,
+        part: "Group T",
+        category: "Immunology",
+        en: "Passive immunization such as patient is given preformed antibodies by placenta (during pregnancy).",
+        ar: "من أمثلة المناعة السلبية انتقال الأجسام المضادة عبر المشيمة أثناء الحمل.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "صحيحة؛ IgG تعبر المشيمة للجنين."
+    },
+    {
+        id: 72,
+        part: "Group T",
+        category: "Immunology",
+        en: "Active immunization mean patient is injected with immunoglobulin.",
+        ar: "المناعة النشطة تعني حقن المريض بالأجسام المضادة الجاهزة.",
+        options: ["True", "False"],
+        correct: 1,
+        explanation: "خاطئة؛ هذا تعريف المناعة السلبية، النشطة تكون بالتطعيم أو العدوى الطبيعية."
+    }
+
+
+    // كمّل باقي جمل الصح/الخطأ بنفس النمط لو حابب
+
+
+
+];
+
+
+
+let currentPartFilter = "all";
+let currentCategoryFilter = "all";
+let currentSearch = "";
+
+const answersState = {}; // id -> {answered: bool, correct: bool}
+
+function renderStats() {
+    const total = allQuestions.length;
+    const answered = Object.values(answersState).filter(a => a.answered).length;
+    const correct = Object.values(answersState).filter(a => a.correct).length;
+    const score = answered ? Math.round((correct / answered) * 100) : 0;
+
+    document.getElementById("stat-total").textContent = total;
+    document.getElementById("stat-answered").textContent = answered;
+    document.getElementById("stat-correct").textContent = correct;
+    document.getElementById("stat-score").textContent = score + "%";
+}
+
+function filterQuestions() {
+    const listEl = document.getElementById("questionsList");
+    listEl.innerHTML = "";
+
+    const search = currentSearch.trim().toLowerCase();
+
+    const filtered = allQuestions.filter(q => {
+        if (currentPartFilter !== "all" && q.part !== currentPartFilter) return false;
+        if (currentCategoryFilter !== "all" && q.category !== currentCategoryFilter) return false;
+
+        if (search) {
+            const hay = (
+                q.en + " " +
+                q.ar + " " +
+                q.part + " " +
+                q.category
+            ).toLowerCase();
+            if (!hay.includes(search)) return false;
+        }
+        return true;
+    });
+
+    filtered.forEach(q => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+        card.dataset.id = q.id;
+
+        const header = document.createElement("div");
+        header.className = "question-header";
+
+        const num = document.createElement("div");
+        num.className = "question-number";
+        num.textContent = q.id;
+
+        const meta = document.createElement("div");
+        meta.className = "question-meta";
+        meta.textContent = q.part + " | " + q.category;
+
+        header.appendChild(num);
+        header.appendChild(meta);
+
+        const en = document.createElement("div");
+        en.className = "question-text-en";
+        en.textContent = q.en;
+
+        const ar = document.createElement("div");
+        ar.className = "question-text-ar";
+        ar.textContent = q.ar;
+
+        const optionsGrid = document.createElement("div");
+        optionsGrid.className = "options-grid";
+
+        q.options.forEach((optText, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = optText;
+            btn.addEventListener("click", () => handleAnswer(q, idx, card, optionsGrid));
+            optionsGrid.appendChild(btn);
+        });
+
+        card.appendChild(header);
+        card.appendChild(en);
+        card.appendChild(ar);
+        card.appendChild(optionsGrid);
+        listEl.appendChild(card);
+    });
+
+    renderStats();
+}
+
+function handleAnswer(question, chosenIndex, cardEl, optionsGridEl) {
+    const buttons = optionsGridEl.querySelectorAll(".option-btn");
+    buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        btn.classList.remove("correct", "wrong");
+        if (idx === question.correct) {
+            btn.classList.add("correct");
+        }
+        if (idx === chosenIndex && idx !== question.correct) {
+            btn.classList.add("wrong");
+        }
+    });
+
+    const isCorrect = chosenIndex === question.correct;
+    answersState[question.id] = {
+        answered: true,
+        correct: isCorrect
+    };
+
+    let footer = cardEl.querySelector(".answer-footer");
+    if (!footer) {
+        footer = document.createElement("div");
+        footer.className = "answer-footer";
+        cardEl.appendChild(footer);
+    }
+    footer.innerHTML = "";
+    const correctLabel = document.createElement("div");
+    correctLabel.className = "correct-label";
+    correctLabel.textContent = "Correct answer: " + question.options[question.correct];
+
+    const expl = document.createElement("div");
+    expl.className = "explanation";
+    expl.textContent = question.explanation;
+
+    footer.appendChild(correctLabel);
+    footer.appendChild(expl);
+
+    renderStats();
+}
+
+document.getElementById("searchInput").addEventListener("input", (e) => {
+    currentSearch = e.target.value;
+    filterQuestions();
+});
+
+document.querySelectorAll(".btn-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const type = btn.dataset.type;
+        const value = btn.dataset.value;
+
+        if (type === "part") {
+            currentPartFilter = value;
+            document
+                .querySelectorAll('.btn-chip[data-type="part"]')
+                .forEach(b => b.classList.remove("active"));
+        } else if (type === "category") {
+            currentCategoryFilter = value;
+            document
+                .querySelectorAll('.btn-chip[data-type="category"]')
+                .forEach(b => b.classList.remove("active"));
+        }
+        btn.classList.add("active");
+        filterQuestions();
+    });
+});
+
+filterQuestions();
+</script>
+</body>
+</html>
